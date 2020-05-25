@@ -3,14 +3,12 @@
     <v-app id="inspire">
       <body class="parallax">
         <Drawer/>
-        <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link>
-        <router-link to="/connexion">co</router-link>
-        </div>
-        <router-view/>
-      </body>
-      
+         <v-content>
+          <v-container fluid>
+            <router-view></router-view>
+          </v-container>
+        </v-content>
+      </body> 
     </v-app>
   </div>
 </template>
@@ -63,5 +61,9 @@ background-position: center;
 background-repeat: no-repeat;
 background-size: cover;
 height: 100%;
+}
+
+#inspire {
+  background: none;
 }
 </style>

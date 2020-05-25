@@ -7,7 +7,7 @@
       >
          <v-col class="border shadow"
             cols="12"
-            sm="5"
+            sm="8"
           >
           <v-row
             :align="alignment"
@@ -25,8 +25,8 @@
             :justify="justify"
           >
             <v-col
-              cols="9"
-              md="8"
+              cols="12"
+              sm="8"
             >
               <v-text-field
                 v-model="login"
@@ -45,8 +45,8 @@
             :justify="justify"
           >   
             <v-col
-              cols="9"
-              md="8" 
+              cols="12"
+              sm="8" 
             >
               <v-text-field
                 v-model="password"
@@ -71,14 +71,12 @@
           >
 
             <v-col class="mt-5 text-center" 
-            cols="9" 
-            md="6">
+            cols="12" 
+            sm="8">
             <div class="my-2">
               <v-btn x-large color="success"
               :disabled="!valid"
               @click="validate">Valider</v-btn>
-             <!-- <v-btn small color="secondary"
-              @click="deco">Déconnexion</v-btn -->
             </div>
             </v-col>
           </v-row>
@@ -134,13 +132,11 @@
           let user = res.data;
           if (user) {
             localStorage.setItem('userId', user.utilisateurId);
+            this.$router.push('/').catch(e => {});
           }
         })
         .catch(e => console.log(e));
       },
-      deco() {
-        localStorage.removeItem('userId');
-      }
     },
   }
 </script>

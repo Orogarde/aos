@@ -11,6 +11,11 @@ Vue.use(VueRouter)
     component: Home
   },
   {
+    path: '/armees',
+    name: 'Armees',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Armees.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     meta: {
@@ -24,11 +29,22 @@ Vue.use(VueRouter)
   {
     path: '/connexion',
     name: 'connexion',
+    meta: {
+      connect: false
+    },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/connexion.vue')
-  }
+  },
+  {
+    path: '/battletomes',
+    name: 'battletomes',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/battletomes.vue')
+  },
 ]
 
 const router = new VueRouter({
@@ -36,13 +52,21 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+  const isConnected = localStorage.getItem('userId') || false;
+
+  if (to.fullPath === '/connexion' && isConnected) {
+    return next('/');
+  }
+
   if (to.matched.some(record => record.meta.connect)) {
-    if (!localStorage.getItem('userId')) {
-      next('/');
-      return;
+    if (!isConnected) {
+      return next('/');
     };
+
   };
+
   next();
+  return;
 });
 
 
