@@ -45,6 +45,14 @@ Vue.use(VueRouter)
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/battletomes.vue')
   },
+  {
+    path: '/createBattletome',
+    name: 'createBattletome',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/createBattletome.vue')
+  },
 ]
 
 const router = new VueRouter({

@@ -9,45 +9,47 @@
         sm="12"
       >
         <div class="text-left">
-        <v-btn rounded color="primary" dark>Création</v-btn>
+        <v-btn rounded color="success" @click="create()" dark>Création</v-btn>
         </div>
       </v-col>
-      <v-col
+      <v-col  
+      v-for="(item, i) in battleTomes"
+                :key="i" 
         cols="12"
-        sm="12"
+        sm="4"
       >
-        <v-card
+          <v-card 
           class="mx-auto"
-          tile
+          max-width="344"
+          outlined
         >
-          
-          <v-list flat>
-            <v-subheader>BATTLETOMES :</v-subheader>
-            <v-list-item-group v-model="item" color="success">
-              <v-list-item
-                v-for="(item, i) in battleTomes"
-                :key="i"
-              >
-                <v-list-item-icon>
-                  <v-icon>mdi-clock</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title v-text="item.description"></v-list-item-title>
-                </v-list-item-content>
-                  <v-btn class="mx-2" fab dark small color="success">
-                  <v-icon dark>mdi-minus</v-icon>
-                  </v-btn>
-                  <v-btn class="mx-2" fab dark small color="warning">
-                  <v-icon dark>mdi-minus</v-icon>
-                  </v-btn>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
+          <v-list-item three-line>
+            <v-list-item-content>
+              <div class="overline mb-4">BATTLETOMES :</div>
+              <v-list-item-title class="headline mb-1">{{item.description}}</v-list-item-title>
+            </v-list-item-content>
+
+            <v-list-item-avatar
+              tile
+              size="80"
+              color="grey"
+            ></v-list-item-avatar>
+          </v-list-item>
+
+          <v-card-actions>
+            <v-btn class="mx-2" fab dark small color="success">
+              <v-icon dark>mdi-minus</v-icon>
+              </v-btn>
+              <v-btn class="mx-2" fab dark small color="warning">
+              <v-icon dark>mdi-minus</v-icon>
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
+
 <script>
   import axios from 'axios';
   export default {
@@ -73,6 +75,9 @@
           this.battleTomes = res;
         })
         .catch(e => console.log(e));
+      },
+      create(){
+        this.$router.push("/createBattletome").catch(e => {});
       }
     },
     async mounted() {

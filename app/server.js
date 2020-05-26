@@ -15,7 +15,7 @@ require('./routes/findBattletomes')(app);
 require('./routes/findUnites')(app);
 require('./routes/createUnite')(app);
 require('./routes/findUtilisateur')(app);
-
+require('./routes/createBattletome')(app);
 app.listen(API_PORT, () => console.log(`listening on port ${API_PORT}`));
 
 module.exports = app;

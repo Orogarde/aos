@@ -1,0 +1,141 @@
+<template>
+  <v-form ref="form" v-model="valid">
+    <v-container>
+      <v-row
+        :align="alignment"
+        :justify="justify"
+      >
+         <v-col class="border shadow"
+            cols="12"
+            sm="8"
+          >
+          <v-row
+            :align="alignment"
+            :justify="justify"
+          >
+            <v-col class="my-5"
+              cols="9"
+              md="8"
+            >
+            <p class="display-1 white--text">Création battletome</p>
+            </v-col>
+          </v-row>
+          <v-row
+            :align="alignment"
+            :justify="justify"
+          >
+            <v-col
+              cols="12"
+              sm="8"
+            >
+              <v-text-field
+                v-model="description"
+                :rules="Rules"
+                :counter="25"
+                color="success"
+                label="description"
+                outlined
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+                
+          <v-row
+            :align="alignment"
+            :justify="justify"
+          >   
+            <v-col
+              cols="12"
+              sm="8" 
+            >
+            <v-file-input
+                v-model="visuel"
+                placeholder="Upload your documents"
+                label="File input"
+                prepend-icon="mdi-paperclip"
+              >
+              </v-file-input>
+            </v-col>
+
+          </v-row>
+          <v-row
+            :align="alignment"
+            :justify="justify"
+          >
+
+            <v-col class="mt-5 text-center" 
+            cols="12" 
+            sm="8">
+            <div class="my-2">
+              <v-btn x-large color="success"
+              :disabled="!valid"
+              @click="validate">Valider</v-btn>
+            </div>
+            </v-col>
+          </v-row>
+         </v-col>
+      </v-row>
+    </v-container>
+  </v-form>
+</template>
+
+<script>
+  import axios from 'axios';
+  import md5 from 'md5';
+  export default {
+    data: () => ({
+      valid: false,
+      description: '',
+      visuel:{},
+      Rules: [
+        v => !!v || 'input is required',
+        v => v.length <= 25 || 'input must be less than 10 characters',
+      ],
+      alignmentsAvailable: [
+          'start',
+          'center',
+          'end',
+          'baseline',
+          'stretch',
+        ],
+        alignment: 'center',
+        dense: false,
+        justifyAvailable: [
+          'start',
+          'center',
+          'end',
+          'space-around',
+          'space-between',
+        ],
+        justify: 'center',
+    }),
+    methods: {
+      validate () {
+        const bt = {
+          descriptionBt: this.description,
+          visuelBt: this.visuel.name
+        }
+        axios({
+          url: `${this.$api}/createBattletome`,
+          method: 'POST',
+          data: bt
+        })
+        .then((res) => {
+            this.$router.push('/battletomes').catch(e => {});
+        })
+        .catch(e => console.log(e));
+      },
+    },
+  }
+</script>
+<style lang="scss">
+ .border {
+   border : solid 3px #ffffff;
+   border-radius: 5%;
+ } 
+ .shadow {
+   -webkit-box-shadow: 10px 4px 51px -3px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 4px 51px -3px rgba(0,0,0,0.75);
+    box-shadow: 10px 4px 51px -3px rgba(0,0,0,0.75);
+ }
+</style>
