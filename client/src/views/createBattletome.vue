@@ -52,9 +52,10 @@
                 v-model="visuel"
                 placeholder="Upload your documents"
                 label="File input"
-                prepend-icon="mdi-paperclip"
               >
               </v-file-input>
+                <img style="" :src="previ" alt="">
+               <!--<input @change="handleImage" class="custom-input" type="file" accept="image/*"> -->
             </v-col>
 
           </v-row>
@@ -87,6 +88,7 @@
       valid: false,
       description: '',
       visuel:{},
+      previ:{},
       Rules: [
         v => !!v || 'input is required',
         v => v.length <= 25 || 'input must be less than 10 characters',
@@ -113,7 +115,7 @@
       validate () {
         const bt = {
           descriptionBt: this.description,
-          visuelBt: this.visuel.name
+          visuelBt: this.visuel.name,
         }
         axios({
           url: `${this.$api}/createBattletome`,
@@ -121,11 +123,47 @@
           data: bt
         })
         .then((res) => {
+            this.handleImage();
             this.$router.push('/battletomes').catch(e => {});
         })
         .catch(e => console.log(e));
       },
+      handleImage() {
+       // console.log(this.visuel);
+        const selectedImage = this.visuel;
+        this.createBase64Image(selectedImage);
+      },
+      createBase64Image(fileObject){
+        const reader = new FileReader();
+        //console.log('reader', reader);
+        reader.onload = () => {
+          //this.previ = reader.result;
+          const visuFinal = this.visuel;
+          this.visuFinal = reader.result;
+          this.uploadImage();
+        };
+        //console.log(typeof(this.visuel));
+        reader.readAsDataURL(fileObject);
+
+      },
+      uploadImage() {
+      const { visuFinal } = this;
+      const name = this.visuel.name;
+      //console.log(visuel);
+      axios({
+          url: `${this.$api}/upload`,
+          method: 'POST',
+          data: [{visuFinal} , name]
+        })
+        .then((response) => {
+          console.log(name);
+          this.remoteUrl = response.data.url;
+        })
+        .catch((err) => {
+          return new Error(err.message);
+        })
     },
+    }
   }
 </script>
 <style lang="scss">

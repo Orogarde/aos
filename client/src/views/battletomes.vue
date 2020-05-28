@@ -16,33 +16,31 @@
       v-for="(item, i) in battleTomes"
                 :key="i" 
         cols="12"
-        sm="4"
+        md="4"
       >
-          <v-card 
-          class="mx-auto"
-          max-width="344"
-          outlined
-        >
-          <v-list-item three-line>
-            <v-list-item-content>
-              <div class="overline mb-4">BATTLETOMES :</div>
-              <v-list-item-title class="headline mb-1">{{item.description}}</v-list-item-title>
-            </v-list-item-content>
+          <v-card
+              class="mx-auto"
+              max-width="400"
+            >
+              <v-img
+                class="white--text align-end"
+                height="200px"
+                :src="`http://localhost/aos/app/public/${item.visuel}`"
+              >
+              </v-img>
 
-            <v-list-item-avatar
-              tile
-              size="80"
-              color="grey"
-            ></v-list-item-avatar>
-          </v-list-item>
 
-          <v-card-actions>
-            <v-btn class="mx-2" fab dark small color="success">
-              <v-icon dark>mdi-minus</v-icon>
-              </v-btn>
-              <v-btn class="mx-2" fab dark small color="warning">
-              <v-icon dark>mdi-minus</v-icon>
-            </v-btn>
+              <v-card-text class="">
+                <div class="title">{{item.description}}</div>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-btn class="mx-2" fab dark small color="success">
+                  <v-icon dark>mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn class="mx-2"  @click="supprimer(item.battletomeId)" fab dark small color="error">
+                  <v-icon dark>mdi-delete</v-icon>
+                </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -78,7 +76,19 @@
       },
       create(){
         this.$router.push("/createBattletome").catch(e => {});
-      }
+      },
+      supprimer(battletomeId){
+        const btId = battletomeId;
+        console.log(btId);
+      axios.post(`${this.$api}/deleteBattletome`, {btId})
+        .then((response) => {
+          this.getBattleTomes();
+
+        })
+        .catch((err) => {
+          return new Error(err.message);
+        })
+      },
     },
     async mounted() {
       await this.getBattleTomes();
