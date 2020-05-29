@@ -12,8 +12,36 @@
         <v-btn rounded color="success" @click="create()" dark>Création</v-btn>
         </div>
       </v-col>
+          <v-dialog v-model="dialog" persistent max-width="600px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">Modifications</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row
+                :align="alignment"
+                :justify="justify">
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field  label="description" v-model="selectBt.description" required></v-text-field>
+                      <v-file-input
+                        v-model="visuel"
+                        :label="selectBt.visuel"
+                      >
+                      </v-file-input>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+              <v-btn color="blue darken-1" text @click="modif(selectBt)">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       <v-col  
-      v-for="(item, i) in battleTomes"
+      v-for="(item, i) in Battletomes"
                 :key="i" 
         cols="12"
         md="4"
@@ -35,8 +63,8 @@
               </v-card-text>
 
               <v-card-actions>
-                <v-btn class="mx-2" fab dark small color="success">
-                  <v-icon dark>mdi-pencil</v-icon>
+                <v-btn class="mx-2" @click="infos(item)" fab dark small color="success">
+                      <v-icon dark>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn class="mx-2"  @click="supprimer(item.battletomeId)" fab dark small color="error">
                   <v-icon dark>mdi-delete</v-icon>
@@ -50,15 +78,19 @@
 
 <script>
   import axios from 'axios';
+  import _ from 'lodash'; 
   export default {
     data: () => ({
+      visuel:{},
+      selectBt:{},
+      dialog: false,
       item:0,
       items: [
         { text: 'Real-Time', icon: 'mdi-clock' },
         { text: 'Audience', icon: 'mdi-account' },
         { text: 'Conversions', icon: 'mdi-flag' },
       ],
-      battleTomes: [],
+      Battletomes: [],
       alignment: 'center',
       justify: 'center',
     }),
@@ -70,7 +102,7 @@
         })
         .then((res) => {
           res = res.data;
-          this.battleTomes = res;
+          this.Battletomes = res;
         })
         .catch(e => console.log(e));
       },
@@ -79,7 +111,6 @@
       },
       supprimer(battletomeId){
         const btId = battletomeId;
-        console.log(btId);
       axios.post(`${this.$api}/deleteBattletome`, {btId})
         .then((response) => {
           this.getBattleTomes();
@@ -89,6 +120,70 @@
           return new Error(err.message);
         })
       },
+      modif(battletomeUse){
+       const btAvantModif = this.Battletomes.find(battletome => battletomeUse.battletomeId === battletome.battletomeId);
+       if ((this.visuel.name === btAvantModif.visuel || !this.visuel.name) && battletomeUse.description === btAvantModif.description)
+       {
+         this.close();
+         return;
+       }
+       if (this.visuel.name) {
+         battletomeUse.visuel = this.visuel.name;
+       }
+       axios({
+          url: `${this.$api}/updateBattletome`,
+          method: 'PUT',
+          data: battletomeUse
+        })
+        .then(async res => {
+          if (this.visuel.name) {
+            await this.handleImage();
+          };
+          await this.getBattleTomes();
+          this.close();
+        })
+        .catch(e => console.log(e));
+      },
+      close() {
+        this.dialog = false;
+        setTimeout(() => {
+          this.selectBt = -1;
+        }, 300);
+      },
+      infos(battletome){
+        this.dialog = true;
+        this.selectBt = _.cloneDeep(battletome);
+      },
+      handleImage() {
+        const selectedImage = this.visuel;
+        this.createBase64Image(selectedImage);
+      },
+      createBase64Image(fileObject){
+        const reader = new FileReader();
+        reader.onload = () => {
+          const visuFinal = this.visuel;
+          this.visuFinal = reader.result;
+          this.uploadImage();
+        };
+        reader.readAsDataURL(fileObject);
+
+      },
+      uploadImage() {
+      const { visuFinal } = this;
+      const name = this.visuel.name;
+      axios({
+          url: `${this.$api}/upload`,
+          method: 'POST',
+          data: [{visuFinal} , name]
+        })
+        .then((response) => {
+          console.log(name);
+          this.remoteUrl = response.data.url;
+        })
+        .catch((err) => {
+          return new Error(err.message);
+        })
+    },
     },
     async mounted() {
       await this.getBattleTomes();

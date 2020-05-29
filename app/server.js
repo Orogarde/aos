@@ -17,6 +17,7 @@ require('./routes/createUnite')(app);
 require('./routes/findUtilisateur')(app);
 require('./routes/createBattletome')(app);
 require('./routes/deleteBattletome')(app);
+require('./routes/updateBattletome')(app);
 require('./routes/upload')(app);
 app.listen(API_PORT, () => console.log(`listening on port ${API_PORT}`));
 
