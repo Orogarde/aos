@@ -117,7 +117,7 @@
             title: 'Laboratoire',
             elems: [
               { title: 'Battletomes',link:'/battletomes'},
-              { title: 'Unitées',link:'/unitees' },
+              { title: 'Unités',link:'/unites' },
               { title: 'modèles',link:'/modeles' },
               { title: 'aptitudes',link:'/aptitudes' },
             ],

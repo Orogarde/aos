@@ -53,6 +53,22 @@ Vue.use(VueRouter)
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/createBattletome.vue')
   },
+  {
+    path: '/createUnite',
+    name: 'createUnite',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/createUnite.vue')
+  },
+  {
+    path: '/unites',
+    name: 'unites',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/unites.vue')
+  },
 ]
 
 const router = new VueRouter({

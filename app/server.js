@@ -14,6 +14,8 @@ app.use(logger('dev'));
 require('./routes/findBattletomes')(app);
 require('./routes/findUnites')(app);
 require('./routes/createUnite')(app);
+require('./routes/deleteUnite')(app);
+require('./routes/updateUnite')(app);
 require('./routes/findUtilisateur')(app);
 require('./routes/createBattletome')(app);
 require('./routes/deleteBattletome')(app);
