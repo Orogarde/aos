@@ -69,6 +69,22 @@ Vue.use(VueRouter)
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/unites.vue')
   },
+  {
+    path: '/createModele',
+    name: 'createModele',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/createModele.vue')
+  },
+  {
+    path: '/modeles',
+    name: 'modeles',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/modeles.vue')
+  },
 ]
 
 const router = new VueRouter({
