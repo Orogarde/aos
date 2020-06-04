@@ -85,6 +85,22 @@ Vue.use(VueRouter)
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/modeles.vue')
   },
+  {
+    path: '/createProfil',
+    name: 'createProfil',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/createProfil.vue')
+  },
+  {
+    path: '/profils',
+    name: 'profils',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/profils.vue')
+  },
 ]
 
 const router = new VueRouter({
