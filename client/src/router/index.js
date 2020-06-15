@@ -133,6 +133,22 @@ Vue.use(VueRouter)
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/aptitudesCommandements.vue')
   },
+  {
+    path: '/createArme',
+    name: 'createArme',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/createArme.vue')
+  },
+  {
+    path: '/armes',
+    name: 'armes',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/armes.vue')
+  },
 ]
 
 const router = new VueRouter({

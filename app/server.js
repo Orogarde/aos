@@ -36,6 +36,10 @@ require('./routes/findUtilisateur')(app);
 require('./routes/createBattletome')(app);
 require('./routes/deleteBattletome')(app);
 require('./routes/updateBattletome')(app);
+require('./routes/findArmes')(app);
+require('./routes/createArme')(app);
+require('./routes/deleteArme')(app);
+require('./routes/updateArme')(app);
 require('./routes/upload')(app);
 app.listen(API_PORT, () => console.log(`listening on port ${API_PORT}`));
 
