@@ -121,6 +121,7 @@
               { title: 'modèles',link:'/modeles' },
               { title: 'profils',link:'/profils' },
               { title: 'aptitudes',link:'/aptitudes' },
+              { title: 'aptitudes de commandements',link:'/aptitudesCommandements' },
             ],
           },
         ],

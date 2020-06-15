@@ -101,6 +101,38 @@ Vue.use(VueRouter)
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/profils.vue')
   },
+  {
+    path: '/createAptitude',
+    name: 'createAptitude',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/createAptitude.vue')
+  },
+  {
+    path: '/aptitudes',
+    name: 'aptitudes',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/aptitudes.vue')
+  },
+  {
+    path: '/createAptitudeCommandement',
+    name: 'createAptitudeCommandement',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/createAptitudeCommandement.vue')
+  },
+  {
+    path: '/aptitudesCommandements',
+    name: 'aptitudesCommandements',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/aptitudesCommandements.vue')
+  },
 ]
 
 const router = new VueRouter({
