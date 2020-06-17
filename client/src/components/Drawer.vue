@@ -123,6 +123,7 @@
               { title: 'Aptitudes',link:'/aptitudes' },
               { title: 'Aptitudes de commandements',link:'/aptitudesCommandements' },
               { title: 'Armes',link:'/armes' },
+              { title: 'Effets',link:'/effets' },
             ],
           },
         ],

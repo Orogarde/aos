@@ -40,6 +40,10 @@ require('./routes/findArmes')(app);
 require('./routes/createArme')(app);
 require('./routes/deleteArme')(app);
 require('./routes/updateArme')(app);
+require('./routes/findEffets')(app);
+require('./routes/createEffet')(app);
+require('./routes/deleteEffet')(app);
+require('./routes/updateEffet')(app);
 require('./routes/upload')(app);
 app.listen(API_PORT, () => console.log(`listening on port ${API_PORT}`));
 

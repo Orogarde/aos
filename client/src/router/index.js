@@ -149,6 +149,22 @@ Vue.use(VueRouter)
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/armes.vue')
   },
+  {
+    path: '/createEffet',
+    name: 'createEffet',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/createEffet.vue')
+  },
+  {
+    path: '/effets',
+    name: 'effets',
+    meta: {
+      connect: true
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/effets.vue')
+  },
 ]
 
 const router = new VueRouter({
