@@ -11,6 +11,9 @@
         <div class="text-left">
         <v-btn rounded color="success" @click="create()" dark>Création</v-btn>
         </div>
+        <div>
+           <p class="title">Unités :</p>
+        </div>
       </v-col>
           <v-dialog v-model="dialog" persistent max-width="600px">
           <v-card>
