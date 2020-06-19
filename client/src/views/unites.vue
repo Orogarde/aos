@@ -73,7 +73,7 @@
               <v-img
                 class="white--text align-end"
                 height="300px"
-                :src="`http://localhost/aos/app/public/${item.visuel}`"
+                :src="`${api}/image/${item.visuel}`"
               >
               </v-img>
 
@@ -135,6 +135,7 @@
   import _ from 'lodash'; 
   export default {
     data: () => ({
+      api:'',
       visuel:{},
       select:{},
       selectUnit:{},
@@ -147,8 +148,9 @@
     }),
     methods: {
       async getUnites() {
+        this.api = this.$api;
         axios({
-          url: `${this.$api}/findUnites`,
+          url: `${this.api}/findUnites`,
           method: 'GET'
         })
         .then((res) => {

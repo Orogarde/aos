@@ -56,7 +56,7 @@
               <v-img
                 class="white--text align-end"
                 height="200px"
-                :src="`http://localhost/aos/app/public/${item.visuel}`"
+                :src="`${api}/image/${item.visuel}`"
               >
               </v-img>
 
@@ -84,6 +84,7 @@
   import _ from 'lodash'; 
   export default {
     data: () => ({
+      api: '',
       visuel:{},
       selectBt:{},
       dialog: false,
@@ -99,11 +100,12 @@
     }),
     methods: {
       async getBattleTomes() {
+        this.api = this.$api;
         axios({
-          url: `${this.$api}/findBattletomes`,
+          url: `${this.api}/findBattletomes`,
           method: 'GET'
         })
-        .then((res) => {
+        .then(async (res) => {
           res = res.data;
           this.Battletomes = res;
         })

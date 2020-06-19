@@ -3,9 +3,9 @@ import Cors from 'cors';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
 const app = express();
-
 const API_PORT = process.env.API_PORT || 3000;
 
+app.use(express.static(__dirname + '/public'));
 app.use(Cors());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json({ limit: '50mb' }));
