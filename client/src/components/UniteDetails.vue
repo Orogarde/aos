@@ -1,27 +1,6 @@
 <template>
   <v-container>
-    <radial-menu v-if="enableUnite"
-      style="margin: auto; margin-top: 290px; background-color: white"
-      :itemSize="100"
-      :size="100"
-      :radius="230"
-      :angle-restriction="180"
-      :rotation="180"
-      >
-        <radial-menu-item  class="selectRadial"
-          v-for="(item, index) in Unites" 
-          :key="index"
-          @click="handleClick(item)"
-        >
-          <v-avatar size="160" class="sizeChange border-black">
-            <img  class="sizeChange"
-              :src="`${api}/image/${item.visuel}`"
-              alt="battletomes"
-            >
-          </v-avatar>
-        </radial-menu-item>
-      </radial-menu>
-      <UniteDetails  v-if="enableDetails" :idUnite="lastClicked.uniteId"/>
+    {{idUnite}}
   </v-container>
 </template>
 <script>
@@ -30,19 +9,16 @@ import axios from 'axios';
 import _ from 'lodash'; 
 import UniteDetails from '../components/UniteDetails'
 export default {
-  name: "UniteSelected",
+  name: "UniteDetails",
   components: {
     RadialMenu,
     RadialMenuItem,
-    UniteDetails,
   },
   props:{
-    idBt:'',
+    idUnite:'',
   },
   data () {
     return {
-      enableUnite: true,
-      enableDetails: false,
       lastClicked: '',
       Unites:[''],
       api: '',
@@ -50,14 +26,14 @@ export default {
   },
   methods: {
   async getUnites() {
-    const battletomeId= {
-      id : this.idBt,
+    const uniteId= {
+      id : this.idUnite,
     };
     this.api = this.$api;
     axios({
-      url: `${this.api}/findUnitesSpe`,
+      url: `${this.api}/findUnitesDetails`,
       method: 'Post',
-      data: battletomeId,
+      data: uniteId,
     })
     .then(async (res) => {
       console.log(res);
@@ -68,11 +44,6 @@ export default {
   },
   handleClick (item) {
       this.lastClicked = item;
-      this.idUnite = this.lastClicked.uniteId;
-      this.enableDetails = true;
-      this.enableUnite = false;
-
-
     },
   },
   async mounted() {

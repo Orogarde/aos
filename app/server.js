@@ -13,6 +13,8 @@ app.use(logger('dev'));
 
 require('./routes/findBattletomes')(app);
 require('./routes/findUnites')(app);
+require('./routes/findUnitesSpe')(app);
+require('./routes/findUnitesDetails')(app);
 require('./routes/findModeles')(app);
 require('./routes/findProfils')(app);
 require('./routes/findAptitudes')(app);
