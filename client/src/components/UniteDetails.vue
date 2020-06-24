@@ -131,22 +131,20 @@
                   <v-expansion-panels popout>
                     <v-expansion-panel>
                       <!-- <v-expansion-panel-header @click="Tri(item.effets)">effets</v-expansion-panel-header> -->
-                      <v-expansion-panel-header>Tableau de dégâts</v-expansion-panel-header>
+                      <v-expansion-panel-header @click="Tri(item.effets)">Tableau de dégâts</v-expansion-panel-header>
                       <v-expansion-panel-content>
                          <v-simple-table>
                             <template v-slot:default>
                               <thead>
                                 <tr>
-                                  <th class="text-center">Blessure</th>
-                                  <th class="text-center">Nom</th>
-                                  <th class="text-center">Valeur</th>
+                                  <th class="text-center">Blessures</th>
+                                  <th class="text-center" v-for="model in nomsEffets" :key="model">{{model}}</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr v-for="model in item.effets" :key="model.nom">
+                                <tr v-for="model in blessuresEffets" :key="model.blessure">
                                   <td>{{ model.blessure }}</td>
-                                  <td>{{ model.nom }}</td>
-                                  <td>{{ model.valeur }}</td>
+                                  <td v-for="val in model.datas" :key="val.valeur">{{ val.valeur }}</td>
                                 </tr>
                               </tbody>
                             </template>
@@ -181,6 +179,8 @@ export default {
       lastClicked: '',
       Unites:[''],
       api: '',
+      nomsEffets: [],
+      blessuresEffets: []
     }
   },
   methods: {
@@ -205,21 +205,19 @@ export default {
   handleClick (item) {
       this.lastClicked = item;
     },
-  // Tri(item){
-  //   console.log(item);
-  //   var blessure = [];
-  //   const valeur = [];
-  //   item.forEach(function(element){
-  //    if(blessure.indexOf(element.blessure) === -1);
-  //    {
-  //      console.log(blessure);
-  //      console.log(element.blessure);
-  //     blessure.push(element.blessure);
-  //    }
-
-  //   });
-  //   console.log(blessure);
-  // },
+  Tri(item){
+    item = _.sortBy(item, ['nom']);
+    const tab = _.mapValues(_.groupBy(item, 'nom'));
+    this.nomsEffets = Object.keys(tab);
+    let blessures = _.mapValues(_.groupBy(item, 'blessure'));
+    blessures = Object.entries(blessures);
+    blessures = blessures.map(blessure => {
+      let datas = blessure[1].map(data => {return {nom: data.nom, valeur: data.valeur}});
+      datas = _.sortBy(datas, ['nom']);
+      return {blessure: blessure[0], datas};
+    })
+    this.blessuresEffets = blessures;
+  },
   empty(item)
   {
     return _.isEmpty(item);

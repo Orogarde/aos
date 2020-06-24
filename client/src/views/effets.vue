@@ -38,9 +38,9 @@
                       return-object
                       single-line
                     ></v-select>
-                    <v-text-field  label="sauvegarge :" v-model="selectEffet.blessure" required></v-text-field>
-                    <v-text-field  label="blessure :" v-model="selectEffet.nom" required></v-text-field>
-                    <v-text-field  label="mouvement :" v-model="selectEffet.valeur" required></v-text-field>
+                    <v-text-field  label="blessure :" v-model="selectEffet.blessure" required></v-text-field>
+                    <v-text-field  label="nom :" v-model="selectEffet.nom" required></v-text-field>
+                    <v-text-field  label="valeur :" v-model="selectEffet.valeur" required></v-text-field>
                     <v-text-field  label="points Aos :" v-model="selectEffet.aosPts" required></v-text-field>
                   </v-col>
                 </v-row>
@@ -177,10 +177,9 @@
       modif(effetUse){
         
        const effetAvantModif = this.effets.find(effet => effetUse.effetId === effet.effetId);
-       if (effetUse.sauvegarde === effetAvantModif.sauvegarde
-       && effetUse.bravoure === effetAvantModif.bravoure
+       if (effetUse.nom === effetAvantModif.nom
+       && effetUse.valeur === effetAvantModif.valeur
        && effetUse.blessure === effetAvantModif.blessure
-       && effetUse.mouvement === effetAvantModif.mouvement
        && effetUse.aosPts === effetAvantModif.aosPts
        && this.select.nom === effetAvantModif.modele.nom)
        {
