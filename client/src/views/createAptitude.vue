@@ -40,7 +40,7 @@
               <v-text-field
                 v-model="effet"
                 :rules="Rules"
-                :counter="25"
+                :counter="500"
                 color="success"
                 label="effet"
                 outlined
@@ -104,7 +104,7 @@
       aosPts:'',
       Rules: [
         v => !!v || 'input is required',
-        v => v.length <= 25 || 'input must be less than 10 characters',
+        v => v.length <= 500 || 'input must be less than 10 characters',
       ],
       alignmentsAvailable: [
           'start',

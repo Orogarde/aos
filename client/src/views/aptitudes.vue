@@ -38,8 +38,8 @@
                       return-object
                       single-line
                     ></v-select>
-                    <v-text-field  label="sauvegarge :" v-model="selectAptitude.nom" required></v-text-field>
-                    <v-text-field  label="blessure :" v-model="selectAptitude.effet" required></v-text-field>
+                    <v-text-field  label="nom :" v-model="selectAptitude.nom" required></v-text-field>
+                    <v-text-field  label="effet :" v-model="selectAptitude.effet" required></v-text-field>
                     <v-text-field  label="points Aos :" v-model="selectAptitude.aosPts" required></v-text-field>
                   </v-col>
                 </v-row>
