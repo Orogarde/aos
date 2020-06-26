@@ -6,12 +6,13 @@
       <v-app-bar
         color="deep-purple accent-4"
         dark
-        prominent
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-  
-        <v-toolbar-title>My files</v-toolbar-title>
-  
+          <v-toolbar-title>
+            <span class="text-center">
+              <v-img :src="`${$api}/image/logo.png`" contain max-width="200" max-height="300"></v-img>
+            </span>
+          </v-toolbar-title>
         <v-spacer></v-spacer>
   
         <p v-if="session">Admin</p>
@@ -34,13 +35,10 @@
           class="py-0"
         >
           <v-list-item two-line :class="miniVariant && 'px-0'">
-            <v-list-item-avatar>
-              <img src="https://randomuser.me/api/portraits/men/81.jpg">
-            </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title>Application</v-list-item-title>
-              <v-list-item-subtitle>Subtext</v-list-item-subtitle>
+              <v-list-item-title>Menu</v-list-item-title>
+              <v-list-item-subtitle>AOS</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
@@ -63,7 +61,7 @@
             @click="deco()"
           >
             <v-list-item-icon>
-              <v-icon>mdi-image</v-icon>
+              <v-icon>mdi-cancel</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -109,8 +107,8 @@
         items: [
           { title: 'Home', icon: 'mdi-view-dashboard',link:'/' },
           { title: 'About', icon: 'mdi-image',link:'/about' },
-          { title: 'Armees', icon: 'mdi-image',link:'/armees' },
-          { title: 'Connexion', icon: 'mdi-help-box',link:'/connexion' },
+          { title: 'Armees', icon: 'mdi-dialpad',link:'/armees' },
+          { title: 'Connexion', icon: 'mdi-checkbox-marked-circle',link:'/connexion' },
         ],
         laboItems: [
           {
@@ -145,7 +143,7 @@
     },
     computed: {
       bg () {
-        return this.background ? 'https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg' : undefined
+        return this.background ? 'http://localhost:3000/image/bg.jpg' : undefined
       },
     },
     watch: {
