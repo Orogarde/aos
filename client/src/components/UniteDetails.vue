@@ -29,7 +29,7 @@
                 <v-icon left>mdi-account</v-icon>
                 PROFIL
               </v-tab>
-              <v-tab>
+              <v-tab @click="calcul(item.armes)">
                 <v-icon left>mdi-share-variant</v-icon>
                 GRAPHIQUE
               </v-tab>
@@ -247,6 +247,41 @@ export default {
       return {blessure: blessure[0], datas};
     })
     this.blessuresEffets = blessures;
+  },
+  calcul(armes){
+    armes = armes.map(arme => {
+      const tableau_degats = this.degat_arme(arme);
+      return {armeId: arme.armeId, degats: tableau_degats};
+    })
+    console.log(armes);
+  },
+  degat_arme(arme) {
+    const degats = [];
+    for (let i = 1; i<= 6; i++) {
+      let chancesTotale = 0;
+      // attaques
+      let compteur = 0;
+      let nbr_attaque = 0;
+      if (arme.nb_attaque.match('D')) {
+        const nbr = arme.nb_attaque.split('D')[0] || 1;
+        const val = arme.nb_attaque.split('D')[1];
+        while(compteur <= 500) {
+          for (let j = 1; j<= nbr; j++) {
+            nbr_attaque += Math.floor(Math.random() * Math.floor(6));
+          };
+          compteur++;
+        };
+        nbr_attaque = nbr_attaque/500;
+      } else {
+        nbr_attaque = arme.nb_attaque;
+      };
+      // chances toucher
+      chancesTotale = nbr_attaque * ((6 - (arme.touche -1)) / 6);
+      // chances blesser
+      chancesTotale *= ((6 - (arme.blesse -1)) / 6);
+      const perfo = (i - 1 + arme.perforation) <= 6 ? (i - 1 + arme.perforation) : 6;
+      chancesTotale *= (1 - (6 - perfo / 6));
+    };
   },
   empty(item)
   {
