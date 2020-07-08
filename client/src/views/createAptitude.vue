@@ -31,7 +31,7 @@
               <v-text-field
                 v-model="nom"
                 :rules="Rules"
-                :counter="25"
+                :counter="100"
                 color="success"
                 label="nom"
                 outlined

@@ -31,7 +31,7 @@
               <v-text-field
                 v-model="nom"
                 :rules="Rules"
-                :counter="25"
+                :counter="100"
                 color="success"
                 label="nom"
                 outlined
@@ -40,7 +40,7 @@
               <v-text-field
                 v-model="blessure"
                 :rules="Rules"
-                :counter="25"
+                :counter="100"
                 color="success"
                 label="blessure"
                 outlined
@@ -115,7 +115,7 @@
       aosPts:'',
       Rules: [
         v => !!v || 'input is required',
-        v => v.length <= 25 || 'input must be less than 10 characters',
+        v => v.length <= 100 || 'input must be less than 10 characters',
       ],
       alignmentsAvailable: [
           'start',

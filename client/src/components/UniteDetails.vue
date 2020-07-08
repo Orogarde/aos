@@ -8,7 +8,7 @@
         center-active
         show-arrows
       >
-        <v-tab
+        <v-tab @click="calcul(item.armes)"
           v-for="item in Unites"
           :key="item.tab"
         >
@@ -29,7 +29,7 @@
                 <v-icon left>mdi-account</v-icon>
                 PROFIL
               </v-tab>
-              <v-tab @click="calcul(item.armes)">
+              <v-tab  @click="calcul(item.armes)">
                 <v-icon left>mdi-share-variant</v-icon>
                 GRAPHIQUE
               </v-tab>
@@ -78,7 +78,7 @@
                         <td>{{ model.nb_attaque }}</td>
                         <td>{{ model.touche }} +</td>
                         <td>{{ model.blesse }} +</td>
-                        <td>{{ model.perforation }}</td>
+                        <td>- {{ model.perforation }}</td>
                         <td>{{ model.degat }}</td>
                       </tr>
                     </tbody>
@@ -155,13 +155,13 @@
                                   <thead>
                                     <tr>
                                       <th class="text-center">Blessures</th>
-                                      <th class="text-center" v-for="model in nomsEffets" :key="model">{{model}}</th>
+                                      <th class="text-center" v-for="model in nomsEffets" :key="model.id">{{model}}</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr v-for="model in blessuresEffets" :key="model.blessure">
                                       <td>{{ model.blessure }}</td>
-                                      <td v-for="val in model.datas" :key="val.valeur">{{ val.valeur }}</td>
+                                      <td v-for="val in model.datas" :key="val.nom">{{ val.valeur }}</td>
                                     </tr>
                                   </tbody>
                                 </template>
@@ -176,10 +176,20 @@
               <v-tab-item>
                 <v-card flat>
                   <v-card-text>
-                   <div>
-                     <span class="title text-center indigo--text">Graphiques :</span>
-                   </div>
+                      <div>
+                          <span class="title text-center indigo--text">Graphiques :</span>
+                      </div>
                   </v-card-text>
+                   <v-row align="center"
+                          justify="center">
+                    <v-col v-for="data in datacollection" :key="data.armeId"
+                      lg=6
+                      md=10
+                      sm=8
+                    >
+                          <bar-chart :chart-data="data.degats"></bar-chart>
+                      </v-col>
+                    </v-row>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -194,27 +204,40 @@ import { RadialMenu,  RadialMenuItem } from 'vue-radial-menu'
 import axios from 'axios';
 import _ from 'lodash'; 
 import UniteDetails from '../components/UniteDetails'
+import { Bar } from 'vue-chartjs'
+import { Line } from 'vue-chartjs'
+import BarChart from './BarChart.js'
 export default {
+  extends: Bar,
+  extends: Line,
   name: "UniteDetails",
   components: {
     RadialMenu,
     RadialMenuItem,
+    BarChart,
   },
   props:{
     idUnite:'',
+    options:'',
   },
   data () {
     return {
+      // chart:'',
+      // damage:[],
+      // canvas: document.getElementsByClassName('bar-chart'),
       tab: null,
       lastClicked: '',
       Unites:[''],
       api: '',
       nomsEffets: [],
-      blessuresEffets: []
+      blessuresEffets: [],
+      data: null,
+      datacollection:null,
     }
   },
   methods: {
-  async getUnites() {
+
+    async getUnites() {
     const uniteId= {
       id : this.idUnite,
     };
@@ -225,10 +248,10 @@ export default {
       data: uniteId,
     })
     .then(async (res) => {
-      console.log(res);
+      //console.log(res);
       res = res.data;
       this.Unites = res;
-      console.log(typeof this.Unites[0].effets);
+      //console.log(typeof this.Unites[0].effets);
     })
     .catch(e => console.log(e));
   },
@@ -248,14 +271,26 @@ export default {
     })
     this.blessuresEffets = blessures;
   },
-  calcul(armes){
-    armes = armes.map(arme => {
+  calcul(armes) {
+    let armesMod = _.cloneDeep(armes);
+    armesMod = armes.map(arme => {
       const tableau_degats = this.degat_arme(arme);
-      return {armeId: arme.armeId, degats: tableau_degats};
-    })
-    console.log(armes);
+      return {armeId: arme.armeId, degats: {
+        labels:["1+","2+","3+","4+","5+","6+"],
+        datasets: [
+          {
+            label : "degats "+arme.nom,
+            backgroundColor: "#1A237E",
+            hoverBackgroundColor: "#303F9F",
+            data: tableau_degats,
+          }
+        ]}};
+    });
+      //console.log(armesMod);
+      this.datacollection = armesMod;
   },
   degat_arme(arme) {
+    //console.log('arme', arme);
     const degats = [];
     for (let i = 1; i<= 6; i++) {
       let chancesTotale = 0;
@@ -279,18 +314,44 @@ export default {
       chancesTotale = nbr_attaque * ((6 - (arme.touche -1)) / 6);
       // chances blesser
       chancesTotale *= ((6 - (arme.blesse -1)) / 6);
-      const perfo = (i - 1 + arme.perforation) <= 6 ? (i - 1 + arme.perforation) : 6;
-      chancesTotale *= (1 - (6 - perfo / 6));
+      // perforation
+      const perfo = (i - 1 + parseInt(arme.perforation)) <= 6 ? (i - 1 + parseInt(arme.perforation)) : 6;
+
+
+      //// autre calcul ////
+      chancesTotale *= (1 - ((6 - perfo) / 6));
+      //// autra calcul ////
+
+      
+      // degats
+      let compteur_d = 0;
+      let degat_count = 0;
+      if (arme.degat.match('D')) {
+        const nbr = arme.degat.split('D')[0] || 1;
+        const val = arme.degat.split('D')[1];
+        while(compteur_d <= 500) {
+          for (let j = 1; j<= nbr; j++) {
+            degat_count += Math.floor(Math.random() * Math.floor(6));
+          };
+          compteur_d++;
+        };
+        degat_count = degat_count/500;
+      } else {
+        degat_count = arme.degat;
+      };
+      //console.log(degat_count);
+      degats.push(chancesTotale*degat_count);
     };
+    return degats;
   },
   empty(item)
   {
     return _.isEmpty(item);
-  }
   },
+},
   async mounted() {
       await this.getUnites();
-    },  
+    },
 }
 </script> 
 <style>
@@ -323,4 +384,5 @@ export default {
   color : #ffffff;
   padding-top:4px;
 }
+
 </style>
