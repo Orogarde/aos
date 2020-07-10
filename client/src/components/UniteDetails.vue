@@ -340,7 +340,8 @@ export default {
         degat_count = arme.degat;
       };
       //console.log(degat_count);
-      degats.push(chancesTotale*degat_count);
+      const degatF = chancesTotale*degat_count;
+      degats.push(degatF.toFixed(2));
     };
     return degats;
   },

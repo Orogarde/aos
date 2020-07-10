@@ -1,7 +1,6 @@
 <template>
   <v-container>
      <v-row
-        :align="alignment"
         :justify="justify"
       >
         <v-col
