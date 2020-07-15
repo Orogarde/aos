@@ -46,6 +46,7 @@ require('./routes/findEffets')(app);
 require('./routes/createEffet')(app);
 require('./routes/deleteEffet')(app);
 require('./routes/updateEffet')(app);
+require('./routes/findBattletomesAndUnits')(app);
 require('./routes/upload')(app);
 app.listen(API_PORT, () => console.log(`listening on port ${API_PORT}`));
 
