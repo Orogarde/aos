@@ -6,6 +6,7 @@ module.exports = (sequelize, type)=> {
             autoIncrement: true
        } ,
        nom: type.STRING,
+       est_chef: type.BOOLEAN
     }, {
         timestamps: false,
         freezeTableName: true,

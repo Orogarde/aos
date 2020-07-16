@@ -4,8 +4,8 @@
         :justify="justify"
       >
       <v-col
-        cols="8"
-        sm="8"
+        cols="9"
+        sm="9"
       >
     <v-data-iterator
       :items="items"
@@ -76,7 +76,7 @@
             md="6"
             lg="4"
           >
-            <v-card>
+            <v-card class="pa-3">
               <v-card-title class="subheading font-weight-bold">{{ item.description }}
               </v-card-title>
 
@@ -91,19 +91,18 @@
                   <v-list-item-content class="align-end" :class="{ 'blue--text': sortBy === key }">{{ item[key.toLowerCase()] }}</v-list-item-content>
                 </v-list-item>
               </v-list> -->
-              <span>{{item.cout_max}}</span>
                <div   v-for="model in item.modeles"
-                :key="model.modeleId" class="text-center border">
+                :key="model.modeleId" class="text-center border my-2">
                 <v-chip
                   class="ma-2"
                 >
                   {{model.nom}}
                 </v-chip>
                 <v-spacer></v-spacer>
-                 <v-btn @click="ajout(model,'1')" class="mx-2" fab dark small color="primary">
+                 <v-btn @click="ajout(model,'1',item)" class="mx-2" fab dark small color="primary">
                     <v-icon dark>mdi-plus</v-icon>
                   </v-btn> 
-                <v-btn @click="ajout(model,'2')" class="mx-2" fab dark small color="pink">
+                <v-btn @click="ajout(model,'2',item)" class="mx-2" fab dark small color="pink">
                       <v-icon dark>mdi-plus</v-icon>
                   </v-btn>
                </div>
@@ -171,10 +170,42 @@
     </v-data-iterator>
       </v-col>
       <v-col
-        cols="4"
-        sm="4"
+        cols="3"
+        sm="3"
       >
-      <span>coucou</span>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">Nom</th>
+                <th class="text-left">nombres</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item,i) in team1" :key="i">
+                <td>{{ item.nom }}</td>
+                <td>{{ item.nb }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+        <v-spacer class="my-2"></v-spacer>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">Nom</th>
+                <th class="text-left">nombres</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item,i) in team2" :key="i">
+                <td>{{ item.nom }}</td>
+                <td>{{ item.nb }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
       </v-col>
      </v-row>
   </v-container>
@@ -239,13 +270,52 @@
       updateItemsPerPage (number) {
         this.itemsPerPage = number
       },
-      ajout(item,equipe)
-      {
-        console.log("coucou");
-        if(equipe === '1')this.team1.push(item);
-        if(equipe === '2')this.team2.push(item);
-        console.log(this.team1);
-      }
+      ajout(item,equipe,unite)
+      { 
+        let modeleUse = _.cloneDeep(item);
+        const findTeam1 = this.team1.find(team => modeleUse.modeleId === team.modeleId)
+        const findTeam2 = this.team2.find(team => modeleUse.modeleId === team.modeleId)
+        console.log('team1 : ',findTeam1);
+        console.log('team2 : ',findTeam2);
+        if (findTeam1 && equipe === '1')
+        {
+          if (!modeleUse.est_chef) {
+            findTeam1.nb += unite.taille_min;
+            const cout = unite.cout_min;
+            findTeam1.cout_total += cout;
+          }
+          console.log(findTeam1.nb);
+          console.log(unite.taille_critique);
+          return;
+
+        }
+        if (!findTeam1 && equipe === '1')
+        {
+          modeleUse.nb = unite.taille_min;
+          if (!modeleUse.est_chef) {
+            modeleUse.nb = (unite.taille_min - 1);
+            modeleUse.cout_total = unite.cout_min;
+          } else {
+            modeleUse.nb = 0;
+            modeleUse.cout_total = 0;
+          }
+          this.team1.push(modeleUse);
+          return ;
+        }
+
+        if (findTeam2 && equipe === '2')
+        {
+          findTeam2.nb += unite.taille_min;
+          return;
+
+        }
+        if(!findTeam2 && equipe === '2')
+        {
+          modeleUse.nb = unite.taille_min;
+          this.team2.push(modeleUse);
+          return;
+        }
+      },
     },
     async mounted() {
       await this.getBattleTomes();
@@ -255,7 +325,7 @@
 <style>
 .border {
   border: solid 2px #000000;
-  border-radius: 5%;
+  border-radius: 7%;
 }
 
 </style>
