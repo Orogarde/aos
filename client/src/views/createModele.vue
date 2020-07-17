@@ -37,6 +37,7 @@
                 outlined
                 required
               ></v-text-field>
+              <v-checkbox label="special" v-model="est_special" ></v-checkbox>
               <v-select
                 v-model="select"
                 label="Unité"
@@ -79,6 +80,7 @@
   export default {
     data: () => ({
       valid: false,
+      est_special:false,
       select:'',
       items:[],
       nom: '',
@@ -109,6 +111,7 @@
         const model = {
           nom: this.nom,
           uniteId: this.select.uniteId,
+          est_special:this.est_special
         }
         axios({
           url: `${this.$api}/createModele`,

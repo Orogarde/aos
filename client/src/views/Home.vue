@@ -99,6 +99,13 @@
                   {{model.nom}}
                 </v-chip>
                 <v-spacer></v-spacer>
+                <v-chip v-if="model.est_special"
+                  class="ma-2" color="secondary"
+                >
+                  special
+                   <v-icon right>mdi-star</v-icon>
+                </v-chip>
+                 <v-spacer></v-spacer>
                  <v-btn @click="ajout(model,'1',item)" class="mx-2" fab dark small color="primary">
                     <v-icon dark>mdi-plus</v-icon>
                   </v-btn> 
@@ -173,39 +180,45 @@
         cols="3"
         sm="3"
       >
-        <v-simple-table>
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">Nom</th>
-                <th class="text-left">nombres</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item,i) in team1" :key="i">
-                <td>{{ item.nom }}</td>
-                <td>{{ item.nb }}</td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-        <v-spacer class="my-2"></v-spacer>
-        <v-simple-table>
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">Nom</th>
-                <th class="text-left">nombres</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item,i) in team2" :key="i">
-                <td>{{ item.nom }}</td>
-                <td>{{ item.nb }}</td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
+      <div>
+        <span>Equipe 1 :</span>
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">Nom</th>
+                  <th class="text-left">nombres</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item,i) in team1" :key="i">
+                  <td>{{ item.nom }}</td>
+                  <td>{{ item.nb }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+          <v-spacer class="my-2"></v-spacer>
+        </div>
+         <div>
+          <span>Equipe 2 :</span>
+            <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">Nom</th>
+                  <th class="text-left">nombres</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item,i) in team2" :key="i">
+                  <td>{{ item.nom }}</td>
+                  <td>{{ item.nb }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+       </div>
       </v-col>
      </v-row>
   </v-container>
@@ -279,7 +292,7 @@
         console.log('team2 : ',findTeam2);
         if (findTeam1 && equipe === '1')
         {
-          if (!modeleUse.est_chef) {
+          if (!modeleUse.est_special) {
             findTeam1.nb += unite.taille_min;
             const cout = unite.cout_min;
             findTeam1.cout_total += cout;
@@ -292,7 +305,7 @@
         if (!findTeam1 && equipe === '1')
         {
           modeleUse.nb = unite.taille_min;
-          if (!modeleUse.est_chef) {
+          if (!modeleUse.est_special) {
             modeleUse.nb = (unite.taille_min - 1);
             modeleUse.cout_total = unite.cout_min;
           } else {

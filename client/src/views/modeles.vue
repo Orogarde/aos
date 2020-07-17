@@ -38,6 +38,7 @@
                       single-line
                     ></v-select>
                     <v-text-field  label="nom modele :" v-model="selectModel.nom" required></v-text-field>
+                    <v-checkbox label="special" v-model="selectModel.est_special" ></v-checkbox>
                   </v-col>
                 </v-row>
               </v-container>
@@ -62,6 +63,7 @@
 
               <v-card-text class="">
                 <div class="title">{{item.nom}}</div>
+                <div class="subtitle">est spécial : {{item.est_special}}</div>
                 <div class="subtitle-2">unite: {{ item.unite.description }}</div>
               </v-card-text>
 
@@ -121,7 +123,8 @@
       },
       modif(modeleUse){
        const modeleAvantModif = this.modeles.find(modele => modeleUse.modeleId === modele.modeleId);
-       if (modeleUse.nom === modeleAvantModif.nom && this.select.description === modeleAvantModif.unite.description)
+       if (modeleUse.nom === modeleAvantModif.nom && modeleUse.est_special === modeleAvantModif.est_special
+       && this.select.description === modeleAvantModif.unite.description)
        {
          this.close();
          return;
