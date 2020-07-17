@@ -77,8 +77,8 @@
             lg="4"
           >
             <v-card class="pa-3">
-              <v-card-title class="subheading font-weight-bold">{{ item.description }}
-              </v-card-title>
+              <v-card-title class="font-weight-bold">{{ item.description }}</v-card-title>
+                 <v-card-title class="py-0 subtitle-1">{{item.battletome.description}}</v-card-title>
 
               <v-divider></v-divider>
 
@@ -91,8 +91,10 @@
                   <v-list-item-content class="align-end" :class="{ 'blue--text': sortBy === key }">{{ item[key.toLowerCase()] }}</v-list-item-content>
                 </v-list-item>
               </v-list> -->
-               <div   v-for="model in item.modeles"
-                :key="model.modeleId" class="text-center border my-2">
+               <div v-for="model in item.modeles"
+                :id="model.modeleId"
+                :key="model.modeleId" class="text-center border my-2"
+                v-bind:class="{ blueColor: choixColorBlue(model.modeleId), pinkColor: choixColorPink(model.modeleId),mixColor: colorMix(model.modeleId) }">
                 <v-chip
                   class="ma-2"
                 >
@@ -106,7 +108,7 @@
                    <v-icon right>mdi-star</v-icon>
                 </v-chip>
                  <v-spacer></v-spacer>
-                 <v-btn @click="ajout(model,'1',item)" class="mx-2" fab dark small color="primary">
+                 <v-btn @click="ajout(model,'1',item)" class="mx-2" fab dark small color="indigo">
                     <v-icon dark>mdi-plus</v-icon>
                   </v-btn> 
                 <v-btn @click="ajout(model,'2',item)" class="mx-2" fab dark small color="pink">
@@ -180,8 +182,8 @@
         cols="3"
         sm="3"
       >
-      <div>
-        <span>Equipe 1 :</span>
+      <div class="indigo">
+        <span class="white--text font-weight-bold">Equipe 1 :</span>
           <v-simple-table>
             <template v-slot:default>
               <thead>
@@ -192,7 +194,7 @@
               </thead>
               <tbody>
                 <tr v-for="(item,i) in team1" :key="i">
-                  <td>{{ item.nom }}</td>
+                  <td class="blueColor white--text">{{ item.nom }}</td>
                   <td>{{ item.nb }}</td>
                 </tr>
               </tbody>
@@ -200,8 +202,8 @@
           </v-simple-table>
           <v-spacer class="my-2"></v-spacer>
         </div>
-         <div>
-          <span>Equipe 2 :</span>
+         <div class="rounded pink ">
+          <span class="white--text font-weight-bold">Equipe 2 :</span>
             <v-simple-table>
             <template v-slot:default>
               <thead>
@@ -212,7 +214,7 @@
               </thead>
               <tbody>
                 <tr v-for="(item,i) in team2" :key="i">
-                  <td>{{ item.nom }}</td>
+                  <td class="pinkColor white--text">{{ item.nom }}</td>
                   <td>{{ item.nb }}</td>
                 </tr>
               </tbody>
@@ -230,6 +232,8 @@
   export default {
     data: () => ({
       api: '',
+      tabColor1:[],
+      tabColor2:[],
       dialog: false,
       datas: [],
       alignment: 'center',
@@ -288,8 +292,8 @@
         let modeleUse = _.cloneDeep(item);
         const findTeam1 = this.team1.find(team => modeleUse.modeleId === team.modeleId)
         const findTeam2 = this.team2.find(team => modeleUse.modeleId === team.modeleId)
-        console.log('team1 : ',findTeam1);
-        console.log('team2 : ',findTeam2);
+        // console.log('team1 : ',findTeam1);
+        // console.log('team2 : ',findTeam2);
         if (findTeam1 && equipe === '1')
         {
           if (!modeleUse.est_special) {
@@ -297,13 +301,16 @@
             const cout = unite.cout_min;
             findTeam1.cout_total += cout;
           }
-          console.log(findTeam1.nb);
-          console.log(unite.taille_critique);
+          // console.log(findTeam1.nb);
+          // console.log(unite.taille_critique);
           return;
 
         }
         if (!findTeam1 && equipe === '1')
         {
+          //color
+          this.tabColor1.push(modeleUse.modeleId);
+          //color
           modeleUse.nb = unite.taille_min;
           if (!modeleUse.est_special) {
             modeleUse.nb = (unite.taille_min - 1);
@@ -324,10 +331,30 @@
         }
         if(!findTeam2 && equipe === '2')
         {
+          //color
+          this.tabColor2.push(modeleUse.modeleId);
+          //color
           modeleUse.nb = unite.taille_min;
           this.team2.push(modeleUse);
           return;
         }
+      },
+      choixColorBlue(modeleUse){
+
+        const find1 = this.tabColor1.find(color => modeleUse == color);
+        const find2 = this.tabColor2.find(color => modeleUse == color);
+        if(find1 && !find2)return true ;
+      },
+      choixColorPink(modeleUse){
+        const find1 = this.tabColor1.find(color => modeleUse == color);
+        const find2 = this.tabColor2.find(color => modeleUse == color);
+        if(find2 && !find1)return true ;
+      },
+      colorMix(modeleUse){
+        const find1 = this.tabColor1.find(color => modeleUse == color);
+        const find2 = this.tabColor2.find(color => modeleUse == color);
+        if(find1 && find2)return true;
+
       },
     },
     async mounted() {
@@ -337,8 +364,19 @@
 </script>
 <style>
 .border {
-  border: solid 2px #000000;
-  border-radius: 7%;
+  border: solid 2px #37474F;
+  border-radius: 2%;
 }
+.blueColor{
+  background-color: #1A237E;
+}
+.pinkColor{
+  background-color: #880E4F;
+}
+.mixColor{
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(26,35,126,1) 0%, rgba(136,14,79,1) 100%);
+}
+
 
 </style>
