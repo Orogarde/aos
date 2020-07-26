@@ -7,6 +7,33 @@
         cols="9"
         sm="9"
       >
+        <v-dialog v-model="dialog" persistent max-width="290">
+          <v-card>
+            <v-card-title class="headline">choix nom:</v-card-title>
+             <v-text-field
+                label="Regular"
+                single-line
+                v-model="nomUnitSelected"
+              ></v-text-field>
+               <v-select
+                v-model="truc"
+                label="modèle"
+                :items="listeNomsUnitSelected"
+                item-text="nom"
+                item-value="nom"
+                dense
+                outlined
+                persistent-hint
+                return-object
+                single-line
+              ></v-select>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" text @click="ajout() , close()">OK</v-btn>
+              <v-btn color="green darken-1" text @click="dialog = false">fermer</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
     <v-data-iterator
       :items="items"
       :items-per-page.sync="itemsPerPage"
@@ -108,10 +135,10 @@
                    <v-icon right>mdi-star</v-icon>
                 </v-chip>
                  <v-spacer></v-spacer>
-                 <v-btn @click="ajout(model,'1',item)" class="mx-2" fab dark small color="indigo">
+                 <v-btn @click="nomUnit(model,'1',item)" class="mx-2" fab dark small color="indigo">
                     <v-icon dark>mdi-plus</v-icon>
                   </v-btn> 
-                <v-btn @click="ajout(model,'2',item)" class="mx-2" fab dark small color="pink">
+                <v-btn @click="nomUnit(model,'2',item)" class="mx-2" fab dark small color="pink">
                       <v-icon dark>mdi-plus</v-icon>
                   </v-btn>
                </div>
@@ -231,6 +258,12 @@
   import _ from 'lodash'; 
   export default {
     data: () => ({
+      truc:'',
+      listeNomsUnitSelected:[],
+      nomUnitSelected:"",
+      dialog:false,
+      selectedUnit:[],
+      tabUnit:[],
       api: '',
       tabColor1:[],
       tabColor2:[],
@@ -287,41 +320,90 @@
       updateItemsPerPage (number) {
         this.itemsPerPage = number
       },
-      ajout(item,equipe,unite)
+      nomUnit(item,equipe,unite){
+        if (this.team1.length && equipe==='1') {
+          // affiche la liste
+          this.listeNomsUnitSelected = [];
+          let noms = _.cloneDeep(this.team1).map(item => item.nom);
+          //noms = noms.filter(this.team1.)
+          // filtrer sur l'id unit
+          this.listeNomsUnitSelected = noms;
+
+        };
+        this.dialog=true;
+        this.listeNomsUnitSelected
+        this.selectedUnit =[];
+        this.selectedUnit=[item,equipe,unite];
+      },
+      close() {
+        this.dialog = false;
+        setTimeout(() => {
+          this.nomUnitSelected = '';
+          this.listeNomsUnitSelected = [];
+          this.truc = '';
+        }, 10);
+      },
+      ajout()
       { 
+        const [item, equipe, unite] = this.selectedUnit;
+        const nomUnitSelected = this.nomUnitSelected || this.truc;
+        console.log('nom',nomUnitSelected);
+        console.log('item',item);
+        console.log('equipe',equipe);
+        console.log('unite',unite);
         let modeleUse = _.cloneDeep(item);
-        const findTeam1 = this.team1.find(team => modeleUse.modeleId === team.modeleId)
+        const findTeam1 = this.team1.find(team => team.unites.find(modele => modele.modeleId === modeleUse.modeleId));
         const findTeam2 = this.team2.find(team => modeleUse.modeleId === team.modeleId)
-        // console.log('team1 : ',findTeam1);
-        // console.log('team2 : ',findTeam2);
-        if (findTeam1 && equipe === '1')
-        {
-          if (!modeleUse.est_special) {
-            findTeam1.nb += unite.taille_min;
-            const cout = unite.cout_min;
-            findTeam1.cout_total += cout;
+        console.log('team1 : ',findTeam1);
+        console.log('team2 : ',findTeam2);
+        if (equipe === '1') {
+
+          // if (!modeleUse.est_special) {
+          //   findTeam1.nb += unite.taille_min;
+          //   const cout = unite.cout_min;
+          //   findTeam1.cout_total += cout;
+          // }
+          const teamsUnit = this.team1.find(item => item.nom === nomUnitSelected);
+          this.tabColor1.push(modeleUse.modeleId);
+          if (teamsUnit) {
+            if (!modeleUse.est_special) {
+              teamsUnit.nb += unite.taille_min;
+            } 
+            teamsUnit.unites.push(modeleUse);
+            //cout et cout_total (teamsUnit.cout_total += cout)
           }
-          // console.log(findTeam1.nb);
-          // console.log(unite.taille_critique);
+          if (!teamsUnit) {
+            const unit = {};
+            unit.nom = nomUnitSelected;
+            unit.unites = [];
+            unit.nb = unite.taille_min;
+            unit.unites.push(modeleUse);
+            // ajouter cout et cout_total dans unit
+            this.team1.push(unit);
+          }
           return;
 
         }
-        if (!findTeam1 && equipe === '1')
-        {
-          //color
-          this.tabColor1.push(modeleUse.modeleId);
-          //color
-          modeleUse.nb = unite.taille_min;
-          if (!modeleUse.est_special) {
-            modeleUse.nb = (unite.taille_min - 1);
-            modeleUse.cout_total = unite.cout_min;
-          } else {
-            modeleUse.nb = 0;
-            modeleUse.cout_total = 0;
-          }
-          this.team1.push(modeleUse);
-          return ;
-        }
+        // if (!findTeam1 && equipe === '1')
+        // {
+        //   //color
+        //   this.tabColor1.push(modeleUse.modeleId);
+        //   //color
+        //   modeleUse.nb = unite.taille_min;
+        //   if (!modeleUse.est_special) {
+        //     modeleUse.nb = (unite.taille_min - 1);
+        //     modeleUse.cout_total = unite.cout_min;
+        //   } else {
+        //     modeleUse.nb = 0;
+        //     modeleUse.cout_total = 0;
+        //   }
+        //   const unit = {};
+        //   unit.nom = nomUnitSelected;
+        //   unit.unites = [];
+        //   unit.unites.push(modeleUse);
+        //   this.team1.push(unit);
+        //   return ;
+        // }
 
         if (findTeam2 && equipe === '2')
         {
@@ -329,7 +411,7 @@
           return;
 
         }
-        if(!findTeam2 && equipe === '2')
+        if (!findTeam2 && equipe === '2')
         {
           //color
           this.tabColor2.push(modeleUse.modeleId);
