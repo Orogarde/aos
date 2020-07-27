@@ -3,21 +3,17 @@
      <v-row
         :justify="justify"
       >
-      <v-col
-        cols="9"
-        sm="9"
-      >
-        <v-dialog v-model="dialog" persistent max-width="290">
+      <v-dialog v-model="dialog" persistent max-width="290">
           <v-card>
-            <v-card-title class="headline">choix nom:</v-card-title>
+            <v-card-title class="headline">choix nom :</v-card-title>
              <v-text-field
-                label="Regular"
+                label="Nom"
                 single-line
                 v-model="nomUnitSelected"
               ></v-text-field>
-               <v-select
+               <v-select v-if="listeNomsUnitSelected.length != [] "
                 v-model="truc"
-                label="modèle"
+                label="sélectionnez une unité"
                 :items="listeNomsUnitSelected"
                 item-text="nom"
                 item-value="nom"
@@ -30,10 +26,14 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="green darken-1" text @click="ajout() , close()">OK</v-btn>
-              <v-btn color="green darken-1" text @click="dialog = false">fermer</v-btn>
+              <v-btn color="green darken-1" text @click="close()">fermer</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
+      <v-col
+        cols="12"
+        sm="12"
+      >
     <v-data-iterator
       :items="items"
       :items-per-page.sync="itemsPerPage"
@@ -206,48 +206,88 @@
     </v-data-iterator>
       </v-col>
       <v-col
-        cols="3"
-        sm="3"
+        cols="12"
+        sm="12"
       >
-      <div class="indigo">
-        <span class="white--text font-weight-bold">Equipe 1 :</span>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left">Nom</th>
-                  <th class="text-left">nombres</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item,i) in team1" :key="i">
-                  <td class="blueColor white--text">{{ item.nom }}</td>
-                  <td>{{ item.nb }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-          <v-spacer class="my-2"></v-spacer>
-        </div>
-         <div class="rounded pink ">
-          <span class="white--text font-weight-bold">Equipe 2 :</span>
-            <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th class="text-left">Nom</th>
-                  <th class="text-left">nombres</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item,i) in team2" :key="i">
-                  <td class="pinkColor white--text">{{ item.nom }}</td>
-                  <td>{{ item.nb }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-       </div>
+        <v-expansion-panels popout>
+          <v-expansion-panel>
+            <v-expansion-panel-header class="white--text font-weight-bold indigo">Equipe 1</v-expansion-panel-header>
+            <v-expansion-panel-content class="panel-color">
+              <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">Nom</th>
+                    <th class="text-left">Nombres</th>
+                    <th class="text-left">Coût</th>
+                    <th class="text-left">Suppression</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="py-2" v-for="(item,i) in team1" :key="i">
+                    <td class="blueColor white--text">unité : {{ item.nom }}
+                      <v-spacer></v-spacer>
+                      <span>({{item.unites[0].nom}})</span>
+                    </td>
+                    <td>{{ item.nb }}</td>
+                    <td>{{ item.cout_total }}</td>
+                    <td> 
+                      <v-btn color="warning"  @click="supprimer(item,'1')"  fab x-small dark>
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+            <div class="pt-4">
+                <p class="font-weight-bold text-right indigo--text">
+                  Coût Team 1 : {{CalculCoutTeam1}} points
+                </p>
+              </div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+        <v-spacer class="py-2"></v-spacer>
+         <v-expansion-panels popout>
+          <v-expansion-panel>
+            <v-expansion-panel-header class="white--text font-weight-bold pink">Equipe 2</v-expansion-panel-header>
+            <v-expansion-panel-content class="panel-color">
+              <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">Nom</th>
+                    <th class="text-left">Nombres</th>
+                    <th class="text-left">Coût</th>
+                    <th class="text-left">Suppression</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="py-2" v-for="(item,i) in team2" :key="i">
+                    <td class="pinkColor white--text">unité : {{ item.nom }}
+                      <v-spacer></v-spacer>
+                      <span>({{item.unites[0].nom}})</span>
+                    </td>
+                    <td>{{ item.nb }}</td>
+                    <td>{{ item.cout_total }}</td>
+                    <td> 
+                      <v-btn color="warning"  @click="supprimer(item,'2')"  fab x-small dark>
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+            <div class="pt-4">
+                <p class="font-weight-bold text-right pink--text">
+                  Coût Team 2 : {{CalculCoutTeam2}} points
+                </p>
+              </div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-col>
      </v-row>
   </v-container>
@@ -263,7 +303,6 @@
       nomUnitSelected:"",
       dialog:false,
       selectedUnit:[],
-      tabUnit:[],
       api: '',
       tabColor1:[],
       tabColor2:[],
@@ -293,6 +332,24 @@
       filteredKeys () {
         return this.keys.filter(key => key !== `Name`)
       },
+      CalculCoutTeam1(){
+  
+        let equipe1 = _.cloneDeep(this.team1)
+        let coutFinal = 0;
+        equipe1.forEach(element => {
+          coutFinal += element.cout_total;
+        });
+        return coutFinal;
+      },
+      CalculCoutTeam2(){
+  
+        let equipe1 = _.cloneDeep(this.team2)
+        let coutFinal = 0;
+        equipe1.forEach(element => {
+          coutFinal += element.cout_total;
+        });
+        return coutFinal;
+      }
     },
     methods: {
       async getBattleTomes() {
@@ -324,7 +381,26 @@
         if (this.team1.length && equipe==='1') {
           // affiche la liste
           this.listeNomsUnitSelected = [];
-          let noms = _.cloneDeep(this.team1).map(item => item.nom);
+          let filtred = _.cloneDeep(this.team1)
+          let noms = [];
+          filtred.forEach(element => {
+           if(element.uniteId == unite.uniteId)
+           noms.push(element.nom);
+          });
+          //console.log("noms : ",noms);
+          // filtrer sur l'id unit
+          this.listeNomsUnitSelected = noms;
+
+        };
+        if (this.team2.length && equipe==='2') {
+          // affiche la liste
+          this.listeNomsUnitSelected = [];
+          let filtred = _.cloneDeep(this.team2)
+          let noms = [];
+          filtred.forEach(element => {
+           if(element.uniteId == unite.uniteId)
+           noms.push(element.nom);
+          });
           //noms = noms.filter(this.team1.)
           // filtrer sur l'id unit
           this.listeNomsUnitSelected = noms;
@@ -368,18 +444,67 @@
           if (teamsUnit) {
             if (!modeleUse.est_special) {
               teamsUnit.nb += unite.taille_min;
+              teamsUnit.cout_total += unite.cout_min;
             } 
+          //console.log('caccc',teamsUnit);
+            if(teamsUnit.nb == unite.taille_critique) teamsUnit.cout_total = unite.cout_max;
+            if(teamsUnit.nb > unite.taille_max) {
+              alert("unité deja complete ");
+              // return marche pas  ///
+              return;
+              // return marche pas ///
+            }
             teamsUnit.unites.push(modeleUse);
             //cout et cout_total (teamsUnit.cout_total += cout)
           }
           if (!teamsUnit) {
             const unit = {};
+            unit.uniteId = unite.uniteId;
             unit.nom = nomUnitSelected;
             unit.unites = [];
             unit.nb = unite.taille_min;
+            unit.cout_total = unite.cout_min;
             unit.unites.push(modeleUse);
             // ajouter cout et cout_total dans unit
             this.team1.push(unit);
+          }
+          return;
+
+        }
+         if (equipe === '2') {
+
+          // if (!modeleUse.est_special) {
+          //   findTeam1.nb += unite.taille_min;
+          //   const cout = unite.cout_min;
+          //   findTeam1.cout_total += cout;
+          // }
+          const teamsUnit = this.team2.find(item => item.nom === nomUnitSelected);
+          this.tabColor2.push(modeleUse.modeleId);
+          if (teamsUnit) {
+            if (!modeleUse.est_special) {
+              teamsUnit.nb += unite.taille_min;
+              teamsUnit.cout_total += unite.cout_min;
+            } 
+          //console.log('caccc',teamsUnit);
+            if(teamsUnit.nb == unite.taille_critique) teamsUnit.cout_total = unite.cout_max;
+            if(teamsUnit.nb > unite.taille_max) {
+              alert("unité deja complete ");
+              // return marche pas  
+              return;
+            }
+            teamsUnit.unites.push(modeleUse);
+            //cout et cout_total (teamsUnit.cout_total += cout)
+          }
+          if (!teamsUnit) {
+            const unit = {};
+            unit.uniteId = unite.uniteId;
+            unit.nom = nomUnitSelected;
+            unit.unites = [];
+            unit.nb = unite.taille_min;
+            unit.cout_total = unite.cout_min;
+            unit.unites.push(modeleUse);
+            // ajouter cout et cout_total dans unit
+            this.team2.push(unit);
           }
           return;
 
@@ -405,21 +530,21 @@
         //   return ;
         // }
 
-        if (findTeam2 && equipe === '2')
-        {
-          findTeam2.nb += unite.taille_min;
-          return;
+        // if (findTeam2 && equipe === '2')
+        // {
+        //   findTeam2.nb += unite.taille_min;
+        //   return;
 
-        }
-        if (!findTeam2 && equipe === '2')
-        {
-          //color
-          this.tabColor2.push(modeleUse.modeleId);
-          //color
-          modeleUse.nb = unite.taille_min;
-          this.team2.push(modeleUse);
-          return;
-        }
+        // }
+        // if (!findTeam2 && equipe === '2')
+        // {
+        //   //color
+        //   this.tabColor2.push(modeleUse.modeleId);
+        //   //color
+        //   modeleUse.nb = unite.taille_min;
+        //   this.team2.push(modeleUse);
+        //   return;
+        // }
       },
       choixColorBlue(modeleUse){
 
@@ -437,6 +562,32 @@
         const find2 = this.tabColor2.find(color => modeleUse == color);
         if(find1 && find2)return true;
 
+      },
+      supprimer(item,equipe){
+        if(equipe === '1')
+        {
+          item.unites.forEach(element => {
+            if(this.tabColor1.find(color => element.modeleId == color))
+            {
+              const posColor = this.tabColor1.indexOf(element.modeleId);
+              this.tabColor1.splice(posColor,1);
+            };
+          });
+          const pos = this.team1.indexOf(item);
+          this.team1.splice(pos,1);
+        }
+        if(equipe === '2')
+        {
+           item.unites.forEach(element => {
+            if(this.tabColor2.find(color => element.modeleId == color))
+            {
+              const posColor = this.tabColor2.indexOf(element.modeleId);
+              this.tabColor2.splice(posColor,1);
+            };
+          });
+          const pos = this.team2.indexOf(item);
+          this.team2.splice(pos,1);
+        }
       },
     },
     async mounted() {
