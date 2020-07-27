@@ -423,15 +423,7 @@
       { 
         const [item, equipe, unite] = this.selectedUnit;
         const nomUnitSelected = this.nomUnitSelected || this.truc;
-        console.log('nom',nomUnitSelected);
-        console.log('item',item);
-        console.log('equipe',equipe);
-        console.log('unite',unite);
         let modeleUse = _.cloneDeep(item);
-        const findTeam1 = this.team1.find(team => team.unites.find(modele => modele.modeleId === modeleUse.modeleId));
-        const findTeam2 = this.team2.find(team => modeleUse.modeleId === team.modeleId)
-        console.log('team1 : ',findTeam1);
-        console.log('team2 : ',findTeam2);
         if (equipe === '1') {
 
           // if (!modeleUse.est_special) {
@@ -443,17 +435,14 @@
           this.tabColor1.push(modeleUse.modeleId);
           if (teamsUnit) {
             if (!modeleUse.est_special) {
+              if (teamsUnit.nb === unite.taille_max) {
+                alert("unité deja complete ");
+                return;
+              }
               teamsUnit.nb += unite.taille_min;
               teamsUnit.cout_total += unite.cout_min;
             } 
-          //console.log('caccc',teamsUnit);
-            if(teamsUnit.nb == unite.taille_critique) teamsUnit.cout_total = unite.cout_max;
-            if(teamsUnit.nb > unite.taille_max) {
-              alert("unité deja complete ");
-              // return marche pas  ///
-              return;
-              // return marche pas ///
-            }
+            if(teamsUnit.nb === unite.taille_critique) teamsUnit.cout_total = unite.cout_max;
             teamsUnit.unites.push(modeleUse);
             //cout et cout_total (teamsUnit.cout_total += cout)
           }
@@ -482,16 +471,14 @@
           this.tabColor2.push(modeleUse.modeleId);
           if (teamsUnit) {
             if (!modeleUse.est_special) {
+              if (teamsUnit.nb === unite.taille_max) {
+                alert("unité deja complete ");
+                return;
+              }
               teamsUnit.nb += unite.taille_min;
               teamsUnit.cout_total += unite.cout_min;
             } 
-          //console.log('caccc',teamsUnit);
             if(teamsUnit.nb == unite.taille_critique) teamsUnit.cout_total = unite.cout_max;
-            if(teamsUnit.nb > unite.taille_max) {
-              alert("unité deja complete ");
-              // return marche pas  
-              return;
-            }
             teamsUnit.unites.push(modeleUse);
             //cout et cout_total (teamsUnit.cout_total += cout)
           }
