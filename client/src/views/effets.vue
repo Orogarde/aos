@@ -56,7 +56,7 @@
       v-for="(item, i) in groupedEffets"
         :key="i" 
         cols="12"
-        md="6"
+        md="10"
       >
       <div class="title white--text">{{item[0].modele.nom}}</div>
       <v-data-table

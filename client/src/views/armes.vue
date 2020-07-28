@@ -28,7 +28,7 @@
                     <v-select
                       v-model="select"
                       :label="`${select.nom}`"
-                      :items="items"
+                      :items="itemsArme"
                       item-text="nom"
                       item-value="nom"
                       dense
@@ -58,19 +58,84 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-      <v-col  
-      v-for="(item, i) in armes"
-                :key="i" 
+      <v-col
         cols="12"
-        md="4"
+        sm="12"
       >
-          <v-card
-              class="mx-auto"
-              max-width="400"
+      <v-data-iterator
+        :items="items"
+        :items-per-page.sync="itemsPerPage"
+        :page="page"
+        :search="search"
+        :sort-by="sortBy.toLowerCase()"
+        :sort-desc="sortDesc"
+        hide-default-footer
+      >
+        <template v-slot:header>
+          <v-toolbar
+            dark
+            color="blue darken-3"
+            class="mb-1"
+          >
+            <v-text-field
+              v-model="search"
+              clearable
+              flat
+              solo-inverted
+              hide-details
+              label="Search"
+            ></v-text-field>
+            <template v-if="$vuetify.breakpoint.mdAndUp">
+              <v-spacer></v-spacer>
+              <v-select
+                v-model="sortBy"
+                flat
+                solo-inverted
+                hide-details
+                :items="keys"
+                label="Sort by"
+              ></v-select>
+              <v-spacer></v-spacer>
+              <v-btn-toggle
+                v-model="sortDesc"
+                mandatory
+              >
+                <v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="false"
+                >
+                  <v-icon>mdi-arrow-up</v-icon>
+                </v-btn>
+                <v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="true"
+                >
+                  <v-icon>mdi-arrow-down</v-icon>
+                </v-btn>
+              </v-btn-toggle>
+            </template>
+          </v-toolbar>
+        </template>
+
+        <template v-slot:default="props">
+          <v-row>
+            <v-col  
+            v-for="(item, i) in props.items"
+                      :key="i" 
+              cols="12"
+              md="4"
             >
+            <v-card
+                class="mx-auto"
+                max-width="400"
+              >
 
               <v-card-text class="">
-                <div class="title">modèle: {{ item.modele.nom }}</div>
+                <div class="title">modèle: {{ item.nomModele }}</div>
                 <hr>
                 <div class="title">arme : {{item.nom}}</div>
                 <div class="subtitle-1">Points AOS : {{ item.aosPts }}</div>
@@ -93,6 +158,67 @@
         </v-card>
       </v-col>
     </v-row>
+ </template>
+
+            <template v-slot:footer>
+              <v-row class="mt-2" align="center" justify="center">
+                <span class="grey--text">unités par page</span>
+                <v-menu offset-y>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      dark
+                      text
+                      color="primary"
+                      class="ml-2"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      {{ itemsPerPage }}
+                      <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-list>
+                    <v-list-item
+                      v-for="(number, index) in itemsPerPageArray"
+                      :key="index"
+                      @click="updateItemsPerPage(number)"
+                    >
+                      <v-list-item-title>{{ number }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+
+                <v-spacer></v-spacer>
+
+                <span
+                  class="mr-4
+                  grey--text"
+                >
+                  Page {{ page }} sur {{ numberOfPages }}
+                </span>
+                <v-btn
+                  fab
+                  dark
+                  color="blue darken-3"
+                  class="mr-1"
+                  @click="formerPage"
+                >
+                  <v-icon>mdi-chevron-left</v-icon>
+                </v-btn>
+                <v-btn
+                  fab
+                  dark
+                  color="blue darken-3"
+                  class="ml-1"
+                  @click="nextPage"
+                >
+                  <v-icon>mdi-chevron-right</v-icon>
+                </v-btn>
+              </v-row>
+            </template>
+          </v-data-iterator>
+        </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -106,11 +232,39 @@
       dialog: false,
       item:0,
       items:[],
+      itemsArme:[],
       armes: [],
       alignment: 'center',
       justify: 'center',
+      itemsPerPageArray: [3, 6, 9],
+      search: '',
+      filter: {},
+      sortDesc: false,
+      page: 1,
+      itemsPerPage: 3,
+      sortBy: 'nom',
+      keys: [
+        'nom',
+      ],
     }),
+    computed: {
+      numberOfPages () {
+        return Math.ceil(this.items.length / this.itemsPerPage)
+      },
+      filteredKeys () {
+        return this.keys.filter(key => key !== `Name`)
+      },
+     },
     methods: {
+    nextPage () {
+        if (this.page + 1 <= this.numberOfPages) this.page += 1
+      },
+      formerPage () {
+        if (this.page - 1 >= 1) this.page -= 1
+      },
+      updateItemsPerPage (number) {
+        this.itemsPerPage = number
+      },
       async getArmes() {
         axios({
           url: `${this.$api}/findArmes`,
@@ -118,7 +272,10 @@
         })
         .then((res) => {
           res = res.data;
-          this.armes = res;
+          res.forEach(element => {
+            element.nomModele = element.modele.nom;
+          });
+          this.items = res;
         })
         .catch(e => console.log(e));
       },
@@ -137,7 +294,7 @@
         })
       },
       modif(armeUse){
-       const armeAvantModif = this.armes.find(arme => armeUse.armeId === arme.armeId);
+       const armeAvantModif = this.items.find(arme => armeUse.armeId === arme.armeId);
        if (armeUse.nom === armeAvantModif.nom
        && armeUse.portee === armeAvantModif.portee
        && armeUse.nb_attaque === armeAvantModif.nb_attaque
@@ -186,7 +343,7 @@
         })
         .then((res) => {
           res = res.data;
-          this.items = res;
+          this.itemsArme = res;
         })
         .catch(e => console.log(e));
       },

@@ -149,7 +149,7 @@
 
       <template v-slot:footer>
         <v-row class="mt-2" align="center" justify="center">
-          <span class="grey--text">Items per page</span>
+          <span class="grey--text">unités par page</span>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -181,7 +181,7 @@
             class="mr-4
             grey--text"
           >
-            Page {{ page }} of {{ numberOfPages }}
+            Page {{ page }} sur {{ numberOfPages }}
           </span>
           <v-btn
             fab
@@ -212,7 +212,7 @@
         <v-expansion-panels popout>
           <v-expansion-panel>
             <v-expansion-panel-header class="white--text font-weight-bold indigo">Equipe 1</v-expansion-panel-header>
-            <v-expansion-panel-content class="panel-color">
+            <v-expansion-panel-content class="panel-color indigo">
               <v-simple-table>
               <template v-slot:default>
                 <thead>
@@ -241,7 +241,7 @@
               </template>
             </v-simple-table>
             <div class="pt-4">
-                <p class="font-weight-bold text-right indigo--text">
+                <p class="font-weight-bold text-right white--text">
                   Coût Team 1 : {{CalculCoutTeam1}} points
                 </p>
               </div>
@@ -252,7 +252,7 @@
          <v-expansion-panels popout>
           <v-expansion-panel>
             <v-expansion-panel-header class="white--text font-weight-bold pink">Equipe 2</v-expansion-panel-header>
-            <v-expansion-panel-content class="panel-color">
+            <v-expansion-panel-content class="panel-color pink">
               <v-simple-table>
               <template v-slot:default>
                 <thead>
@@ -281,7 +281,7 @@
               </template>
             </v-simple-table>
             <div class="pt-4">
-                <p class="font-weight-bold text-right pink--text">
+                <p class="font-weight-bold text-right white--text">
                   Coût Team 2 : {{CalculCoutTeam2}} points
                 </p>
               </div>
