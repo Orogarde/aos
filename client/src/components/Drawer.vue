@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <v-card   class="mx-auto overflow-hidden">
-     <v-system-bar color="deep-purple darken-3"></v-system-bar>
   
       <v-app-bar
         color="deep-purple accent-4"
@@ -106,7 +105,6 @@
         drawer: false,
         items: [
           { title: 'Home', icon: 'mdi-view-dashboard',link:'/' },
-          { title: 'About', icon: 'mdi-image',link:'/about' },
           { title: 'Armees', icon: 'mdi-dialpad',link:'/armees' },
           { title: 'Connexion', icon: 'mdi-checkbox-marked-circle',link:'/connexion' },
         ],

@@ -46,8 +46,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-              <v-btn color="blue darken-1" text @click="modif(selectAptitude)">Save</v-btn>
+              <v-btn color="blue darken-1" text @click="dialog = false">Fermer</v-btn>
+              <v-btn color="blue darken-1" text @click="modif(selectAptitude)">Sauvegarder</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -139,7 +139,7 @@
                       <v-btn class="mx-2" @click="infos(item)" fab dark small color="success">
                             <v-icon dark>mdi-pencil</v-icon>
                       </v-btn>
-                      <v-btn class="mx-2"  @click="supprimer(item.aptitudeId)" fab dark small color="error">
+                      <v-btn class="mx-2"  @click="supprimer(item.aptitudeCId)" fab dark small color="error">
                         <v-icon dark>mdi-delete</v-icon>
                       </v-btn>
                 </v-card-actions>

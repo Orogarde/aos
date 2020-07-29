@@ -213,19 +213,19 @@
           <v-expansion-panel>
             <v-expansion-panel-header class="white--text font-weight-bold indigo">Equipe 1</v-expansion-panel-header>
             <v-expansion-panel-content class="panel-color indigo">
-              <v-simple-table>
+              <v-simple-table dark>
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th class="text-left">Nom</th>
-                    <th class="text-left">Nombres</th>
-                    <th class="text-left">Coût</th>
-                    <th class="text-left">Suppression</th>
+                    <th class="text-center">Nom</th>
+                    <th class="text-center">Nombres</th>
+                    <th class="text-center">Coût</th>
+                    <th class="text-center">Suppression</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="py-2" v-for="(item,i) in team1" :key="i">
-                    <td class="blueColor white--text">unité : {{ item.nom }}
+                    <td class="white--text">unité : {{ item.nom }}
                       <v-spacer></v-spacer>
                       <span>({{item.unites[0].nom}})</span>
                     </td>
@@ -251,21 +251,21 @@
         <v-spacer class="py-2"></v-spacer>
          <v-expansion-panels popout>
           <v-expansion-panel>
-            <v-expansion-panel-header class="white--text font-weight-bold pink">Equipe 2</v-expansion-panel-header>
-            <v-expansion-panel-content class="panel-color pink">
-              <v-simple-table>
+            <v-expansion-panel-header class="white--text font-weight-bold pink darken-3">Equipe 2</v-expansion-panel-header>
+            <v-expansion-panel-content class="panel-color pink darken-3">
+              <v-simple-table dark>
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th class="text-left">Nom</th>
-                    <th class="text-left">Nombres</th>
-                    <th class="text-left">Coût</th>
-                    <th class="text-left">Suppression</th>
+                    <th class="text-center">Nom</th>
+                    <th class="text-center">Nombres</th>
+                    <th class="text-center">Coût</th>
+                    <th class="text-center">Suppression</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="py-2" v-for="(item,i) in team2" :key="i">
-                    <td class="pinkColor white--text">unité : {{ item.nom }}
+                    <td class="white--text">unité : {{ item.nom }}
                       <v-spacer></v-spacer>
                       <span>({{item.unites[0].nom}})</span>
                     </td>
