@@ -76,7 +76,7 @@
               flat
               solo-inverted
               hide-details
-              label="Search"
+              label="recherche"
             ></v-text-field>
             <template v-if="$vuetify.breakpoint.mdAndUp">
               <v-spacer></v-spacer>

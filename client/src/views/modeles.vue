@@ -45,8 +45,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-              <v-btn color="blue darken-1" text @click="modif(selectModel)">Save</v-btn>
+              <v-btn color="blue darken-1" text @click="dialog = false">Fermer</v-btn>
+              <v-btn color="blue darken-1" text @click="modif(selectModel)">Sauvegarder</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -75,7 +75,7 @@
               flat
               solo-inverted
               hide-details
-              label="Search"
+              label="recherche"
             ></v-text-field>
             <template v-if="$vuetify.breakpoint.mdAndUp">
               <v-spacer></v-spacer>

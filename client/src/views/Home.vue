@@ -55,7 +55,7 @@
             flat
             solo-inverted
             hide-details
-            label="Search"
+            label="recherche"
           ></v-text-field>
           <template v-if="$vuetify.breakpoint.mdAndUp">
             <v-spacer></v-spacer>
@@ -103,7 +103,7 @@
             md="6"
             lg="4"
           >
-            <v-card class="pa-3">
+            <v-card class=" scroll pa-3">
               <v-card-title class="font-weight-bold">{{ item.description }}</v-card-title>
                  <v-card-title class="py-0 subtitle-1">{{item.battletome.description}}</v-card-title>
 
@@ -122,11 +122,11 @@
                 :id="model.modeleId"
                 :key="model.modeleId" class="text-center border my-2"
                 v-bind:class="{ blueColor: choixColorBlue(model.modeleId), pinkColor: choixColorPink(model.modeleId),mixColor: colorMix(model.modeleId) }">
-                <v-chip
-                  class="ma-2"
+                <span
+                  class="font-weight-bold d-inline-flex align-center justify-center pa-1 "
                 >
                   {{model.nom}}
-                </v-chip>
+                </span>
                 <v-spacer></v-spacer>
                 <v-chip v-if="model.est_special"
                   class="ma-2" color="secondary"
@@ -149,7 +149,7 @@
 
       <template v-slot:footer>
         <v-row class="mt-2" align="center" justify="center">
-          <span class="grey--text">unités par page</span>
+          <span class="black--text">unités par page</span>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -589,13 +589,23 @@
 }
 .blueColor{
   background-color: #1A237E;
+  color : #ffffff !important;
 }
 .pinkColor{
   background-color: #880E4F;
+  color : #ffffff !important;
 }
 .mixColor{
   background: rgb(2,0,36);
   background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(26,35,126,1) 0%, rgba(136,14,79,1) 100%);
+  color: #ffffff !important;
+}
+.scroll{
+  height: 400px;
+  overflow: auto;
+}
+.border-r{
+  border-radius: 15px;
 }
 
 
