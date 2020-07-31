@@ -104,8 +104,9 @@
             lg="4"
           >
             <v-card class=" scroll pa-3">
-              <v-card-title class="font-weight-bold">{{ item.description }}</v-card-title>
-                 <v-card-title class="py-0 subtitle-1">{{item.battletome.description}}</v-card-title>
+              <v-card-title class="teal--text border-r d-inline-flex align-center rounded font-weight-bold">{{ item.description }}</v-card-title>
+                <v-spacer></v-spacer>
+                 <v-card-title class="white--text border-r d-inline-flex align-center teal darken-4 py-0 subtitle-1 mb-2">{{item.battletome.description}}</v-card-title>
 
               <v-divider></v-divider>
 
@@ -496,42 +497,6 @@
           return;
 
         }
-        // if (!findTeam1 && equipe === '1')
-        // {
-        //   //color
-        //   this.tabColor1.push(modeleUse.modeleId);
-        //   //color
-        //   modeleUse.nb = unite.taille_min;
-        //   if (!modeleUse.est_special) {
-        //     modeleUse.nb = (unite.taille_min - 1);
-        //     modeleUse.cout_total = unite.cout_min;
-        //   } else {
-        //     modeleUse.nb = 0;
-        //     modeleUse.cout_total = 0;
-        //   }
-        //   const unit = {};
-        //   unit.nom = nomUnitSelected;
-        //   unit.unites = [];
-        //   unit.unites.push(modeleUse);
-        //   this.team1.push(unit);
-        //   return ;
-        // }
-
-        // if (findTeam2 && equipe === '2')
-        // {
-        //   findTeam2.nb += unite.taille_min;
-        //   return;
-
-        // }
-        // if (!findTeam2 && equipe === '2')
-        // {
-        //   //color
-        //   this.tabColor2.push(modeleUse.modeleId);
-        //   //color
-        //   modeleUse.nb = unite.taille_min;
-        //   this.team2.push(modeleUse);
-        //   return;
-        // }
       },
       choixColorBlue(modeleUse){
 

@@ -104,7 +104,7 @@
         session: localStorage.getItem('userId'),
         drawer: false,
         items: [
-          { title: 'Home', icon: 'mdi-view-dashboard',link:'/' },
+          { title: 'Comparateur', icon: 'mdi-view-dashboard',link:'/' },
           { title: 'Armees', icon: 'mdi-dialpad',link:'/armees' },
           { title: 'Connexion', icon: 'mdi-checkbox-marked-circle',link:'/connexion' },
         ],
