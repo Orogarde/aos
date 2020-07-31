@@ -12,7 +12,7 @@ module.exports = (sequelize, type)=> {
        blesse: type.STRING,
        perforation: type.STRING,
        degat:type.STRING,
-       aosPts: type.STRING,
+       aosPts: type.DECIMAL,
     }, {
         timestamps: false,
         freezeTableName: true,

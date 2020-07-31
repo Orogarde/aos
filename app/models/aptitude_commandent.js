@@ -7,7 +7,7 @@ module.exports = (sequelize, type)=> {
        } ,
        nom: type.STRING,
        effet: type.STRING,
-       aosPts: type.STRING,
+       aosPts: type.DECIMAL,
     }, {
         timestamps: false,
         freezeTableName: true,

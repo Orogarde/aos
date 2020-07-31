@@ -9,7 +9,7 @@ module.exports = (sequelize, type)=> {
        blessure: type.STRING,
        bravoure: type.STRING,
        mouvement: type.STRING,
-       aosPts: type.STRING
+       aosPts: type.DECIMAL
     }, {
         timestamps: false,
         freezeTableName: true,

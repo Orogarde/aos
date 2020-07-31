@@ -34,6 +34,9 @@
         cols="12"
         sm="12"
       >
+       <div class="my-2">
+            <v-btn color="warning" @click="Calcul()" dark>Valider</v-btn>
+          </div>
     <v-data-iterator
       :items="items"
       :items-per-page.sync="itemsPerPage"
@@ -452,6 +455,7 @@
             unit.uniteId = unite.uniteId;
             unit.nom = nomUnitSelected;
             unit.unites = [];
+            unit.taille_min = unite.taille_min;
             unit.nb = unite.taille_min;
             unit.cout_total = unite.cout_min;
             unit.unites.push(modeleUse);
@@ -488,6 +492,7 @@
             unit.uniteId = unite.uniteId;
             unit.nom = nomUnitSelected;
             unit.unites = [];
+            unit.taille_min = unite.taille_min;
             unit.nb = unite.taille_min;
             unit.cout_total = unite.cout_min;
             unit.unites.push(modeleUse);
@@ -540,6 +545,36 @@
           const pos = this.team2.indexOf(item);
           this.team2.splice(pos,1);
         }
+      },
+      Calcul(){
+        const teams = [this.team1, this.team2];
+        teams.forEach(team => {
+          team = team.map(sousTeam => {
+          sousTeam.unites = sousTeam.unites.map(unite => {
+            let aptitude_cmd = _.cloneDeep(unite.aptitude_commandements);
+            let aptitudes = _.cloneDeep(unite.aptitudes);
+            let armes = _.cloneDeep(unite.armes);
+            let profils = _.cloneDeep(unite.profils);
+            let effets = _.cloneDeep(unite.effets);
+            let caracteristiques = [aptitude_cmd, aptitudes, armes, profils, effets];
+            caracteristiques = caracteristiques.map(caracteristique => {
+              if (caracteristique.length) {
+                caracteristique = caracteristique.map(caracteristique => caracteristique.aosPts)
+                caracteristique = caracteristique.length > 1 ? caracteristique.reduce((a, b) => { 
+                  return Number(a) + Number(b)
+                  }, 0) : Number(caracteristique[0]);
+              } else {
+                caracteristique = 0;
+              }
+              return caracteristique;
+            });
+          caracteristiques = caracteristiques.reduce((a, b) => a + b);
+          unite.cout_carac = caracteristiques
+          return unite;
+          })
+          return sousTeam;
+        })
+        })
       },
     },
     async mounted() {

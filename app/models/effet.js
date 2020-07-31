@@ -8,7 +8,7 @@ module.exports = (sequelize, type)=> {
        blessure: type.STRING,
        nom: type.STRING,
        valeur: type.STRING,
-       aosPts: type.STRING
+       aosPts: type.DECIMAL
     }, {
         timestamps: false,
         freezeTableName: true,
