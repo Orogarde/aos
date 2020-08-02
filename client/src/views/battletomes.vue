@@ -264,15 +264,18 @@
         this.$router.push("/createBattletome").catch(e => {});
       },
       supprimer(battletomeId){
-        const btId = battletomeId;
-      axios.post(`${this.$api}/deleteBattletome`, {btId})
-        .then((response) => {
-          this.getBattleTomes();
+        if (window.confirm("Voulez vous supprimer l'objet ?"))
+        {
+          const btId = battletomeId;
+        axios.post(`${this.$api}/deleteBattletome`, {btId})
+          .then((response) => {
+            this.getBattleTomes();
 
-        })
-        .catch((err) => {
-          return new Error(err.message);
-        })
+          })
+          .catch((err) => {
+            return new Error(err.message);
+          })
+        }
       },
       modif(battletomeUse){
        const btAvantModif = this.items.find(battletome => battletomeUse.battletomeId === battletome.battletomeId);

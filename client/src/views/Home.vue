@@ -327,6 +327,8 @@
         ],
         items: [],
         team1 :[],
+        team1_cout_aos: 0,
+        team2_cout_aos: 0,
         team2 :[],
     }),
      computed: {
@@ -547,33 +549,47 @@
         }
       },
       Calcul(){
+        this.team1_cout_aos = 0;
+        this.team2_cout_aos = 0;
         const teams = [this.team1, this.team2];
         teams.forEach(team => {
+          team.cout_aos = 0;
           team = team.map(sousTeam => {
-          sousTeam.unites = sousTeam.unites.map(unite => {
-            let aptitude_cmd = _.cloneDeep(unite.aptitude_commandements);
-            let aptitudes = _.cloneDeep(unite.aptitudes);
-            let armes = _.cloneDeep(unite.armes);
-            let profils = _.cloneDeep(unite.profils);
-            let effets = _.cloneDeep(unite.effets);
-            let caracteristiques = [aptitude_cmd, aptitudes, armes, profils, effets];
-            caracteristiques = caracteristiques.map(caracteristique => {
-              if (caracteristique.length) {
-                caracteristique = caracteristique.map(caracteristique => caracteristique.aosPts)
-                caracteristique = caracteristique.length > 1 ? caracteristique.reduce((a, b) => { 
-                  return Number(a) + Number(b)
-                  }, 0) : Number(caracteristique[0]);
-              } else {
-                caracteristique = 0;
-              }
-              return caracteristique;
+            sousTeam.unites = sousTeam.unites.map(unite => {
+              let aptitude_cmd = _.cloneDeep(unite.aptitude_commandements);
+              let aptitudes = _.cloneDeep(unite.aptitudes);
+              let armes = _.cloneDeep(unite.armes);
+              let profils = _.cloneDeep(unite.profils);
+              let effets = _.cloneDeep(unite.effets);
+              let caracteristiques = [aptitude_cmd, aptitudes, armes, profils, effets];
+              caracteristiques = caracteristiques.map(caracteristique => {
+                if (caracteristique.length) {
+                  caracteristique = caracteristique.map(caracteristique => caracteristique.aosPts)
+                  caracteristique = caracteristique.length > 1 ? caracteristique.reduce((a, b) => { 
+                    return Number(a) + Number(b)
+                    }, 0) : Number(caracteristique[0]);
+                } else {
+                  caracteristique = 0;
+                }
+                return caracteristique;
+              });
+            caracteristiques = caracteristiques.reduce((a, b) => a + b);
+            unite.cout_carac = caracteristiques
+            return unite;
             });
-          caracteristiques = caracteristiques.reduce((a, b) => a + b);
-          unite.cout_carac = caracteristiques
-          return unite;
-          })
+          console.log(sousTeam);
+          let sousTeamUnites = _.cloneDeep(sousTeam.unites);
+          sousTeamUnites = sousTeamUnites.map(unite => unite.cout_carac);
+          sousTeamUnites = sousTeamUnites.reduce((a, b) => a + b) / sousTeam.unites.length;
+          sousTeam.cout_aos = sousTeamUnites * sousTeam.nb;
+          if (_.isEqual(team, this.team1)) {
+            this.team1_cout_aos += sousTeam.cout_aos;
+          };
+          if (_.isEqual(team, this.team2)) {
+            this.team2_cout_aos += sousTeam.cout_aos;
+          };
           return sousTeam;
-        })
+          })
         })
       },
     },
