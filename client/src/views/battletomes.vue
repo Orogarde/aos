@@ -295,8 +295,9 @@
         .then(async res => {
           if (this.visuel.name) {
             await this.handleImage();
-          };
+          } else {
           await this.getBattleTomes();
+          }
           this.close();
         })
         .catch(e => console.log(e));
@@ -333,9 +334,10 @@
           method: 'POST',
           data: [{visuFinal} , name]
         })
-        .then((response) => {
+        .then(async (response) => {
           console.log(name);
           this.remoteUrl = response.data.url;
+          await this.getBattleTomes();
         })
         .catch((err) => {
           return new Error(err.message);
