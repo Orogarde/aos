@@ -458,8 +458,13 @@
             unit.nom = nomUnitSelected;
             unit.unites = [];
             unit.taille_min = unite.taille_min;
-            unit.nb = unite.taille_min;
-            unit.cout_total = unite.cout_min;
+            if (!modeleUse.est_special) {
+                unit.nb = unite.taille_min;
+                unit.cout_total = unite.cout_min;
+            } else { 
+                unit.nb = 0;
+                unit.cout_total = 0;
+            }
             unit.unites.push(modeleUse);
             // ajouter cout et cout_total dans unit
             this.team1.push(unit);
@@ -495,8 +500,13 @@
             unit.nom = nomUnitSelected;
             unit.unites = [];
             unit.taille_min = unite.taille_min;
-            unit.nb = unite.taille_min;
-            unit.cout_total = unite.cout_min;
+            if (!modeleUse.est_special) {
+                unit.nb = unite.taille_min;
+                unit.cout_total = unite.cout_min;
+            } else { 
+                unit.nb = 0;
+                unit.cout_total = 0;
+            }
             unit.unites.push(modeleUse);
             // ajouter cout et cout_total dans unit
             this.team2.push(unit);
