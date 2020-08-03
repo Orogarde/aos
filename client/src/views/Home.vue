@@ -1,6 +1,6 @@
 <template>
   <v-container>
-     <v-row
+     <v-row v-if="result == false"
         :justify="justify"
       >
       <v-dialog v-model="dialog" persistent max-width="290">
@@ -34,9 +34,6 @@
         cols="12"
         sm="12"
       >
-       <div class="my-2">
-            <v-btn color="warning" @click="Calcul()" dark>Valider</v-btn>
-          </div>
     <v-data-iterator
       :items="items"
       :items-per-page.sync="itemsPerPage"
@@ -292,16 +289,39 @@
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
+        <div class="my-2">
+            <v-btn color="warning" @click="Calcul()" dark>Valider</v-btn>
+        </div>
       </v-col>
      </v-row>
+     <ResultatComparateur v-if="result" 
+     :team1="team1" :team2="team2" 
+     :team1_cout_aos="team1_cout_aos" :team2_cout_aos="team2_cout_aos"
+     :CalculCoutTeam1='CalculCoutTeam1' :CalculCoutTeam2="CalculCoutTeam2"
+     />
+     <v-btn v-if="result" @click="returnHome()"
+          color="pink"
+          dark
+          small
+          top
+          left
+          fab
+          >
+          <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
   </v-container>
 </template>
 
 <script>
   import axios from 'axios';
-  import _ from 'lodash'; 
+  import _ from 'lodash';
+  import ResultatComparateur from '../components/ResultatComparateur'
   export default {
+     components: {
+    ResultatComparateur,
+  },
     data: () => ({
+      result:false,
       truc:'',
       listeNomsUnitSelected:[],
       nomUnitSelected:"",
@@ -454,6 +474,8 @@
           }
           if (!teamsUnit) {
             const unit = {};
+            unit.visu = unite.battletome.visuel;
+            unit.visuUnit = unite.visuel;
             unit.uniteId = unite.uniteId;
             unit.nom = nomUnitSelected;
             unit.unites = [];
@@ -496,6 +518,8 @@
           }
           if (!teamsUnit) {
             const unit = {};
+            unit.visu = unite.battletome.visuel;
+            unit.visuUnit = unite.visuel;
             unit.uniteId = unite.uniteId;
             unit.nom = nomUnitSelected;
             unit.unites = [];
@@ -598,10 +622,15 @@
           if (_.isEqual(team, this.team2)) {
             this.team2_cout_aos += sousTeam.cout_aos;
           };
+          this.result = true
           return sousTeam;
           })
         })
       },
+      returnHome()
+      {
+        this.result = false;
+      }
     },
     async mounted() {
       await this.getBattleTomes();
