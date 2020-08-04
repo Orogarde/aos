@@ -275,15 +275,18 @@
         this.$router.push("/createProfil").catch(e => {});
       },
       supprimer(profilId){
-      const profilIdSup = profilId;
-      axios.post(`${this.$api}/deleteProfil`, {profilIdSup})
-        .then((response) => {
-          this.getProfils();
+      if (window.confirm("Voulez vous supprimer l'objet ?"))
+        {
+        const profilIdSup = profilId;
+        axios.post(`${this.$api}/deleteProfil`, {profilIdSup})
+          .then((response) => {
+            this.getProfils();
 
-        })
-        .catch((err) => {
-          return new Error(err.message);
-        })
+          })
+          .catch((err) => {
+            return new Error(err.message);
+          })
+        }
       },
       modif(profilUse){
        const profilAvantModif = this.items.find(profil => profilUse.profilId === profil.profilId);

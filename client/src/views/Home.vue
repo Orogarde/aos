@@ -639,8 +639,8 @@
 </script>
 <style>
 .border {
-  border: solid 2px #37474F;
-  border-radius: 2%;
+  border: solid 2px #37474F !important;
+  border-radius: 2% !important;
 }
 .blueColor{
   background-color: #1A237E;
@@ -662,6 +662,24 @@
 .border-r{
   border-radius: 15px;
 }
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  background: #cdcdcd;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
 </style>

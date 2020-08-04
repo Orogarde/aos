@@ -163,15 +163,18 @@
         this.$router.push("/createEffet").catch(e => {});
       },
       supprimer(effetId){
-      const effetIdSup = effetId;
-      axios.post(`${this.$api}/deleteEffet`, {effetIdSup})
-        .then((response) => {
-          this.getEffets();
+      if (window.confirm("Voulez vous supprimer l'objet ?"))
+        {
+        const effetIdSup = effetId;
+        axios.post(`${this.$api}/deleteEffet`, {effetIdSup})
+          .then((response) => {
+            this.getEffets();
 
-        })
-        .catch((err) => {
-          return new Error(err.message);
-        })
+          })
+          .catch((err) => {
+            return new Error(err.message);
+          })
+        }
       },
       modif(effetUse){
         

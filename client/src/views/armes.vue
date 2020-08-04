@@ -283,15 +283,18 @@
         this.$router.push("/createArme").catch(e => {});
       },
       supprimer(armeId){
-      const armeIdSup = armeId;
-      axios.post(`${this.$api}/deleteArme`, {armeIdSup})
-        .then((response) => {
-          this.getArmes();
+      if (window.confirm("Voulez vous supprimer l'objet ?"))
+        {
+        const armeIdSup = armeId;
+        axios.post(`${this.$api}/deleteArme`, {armeIdSup})
+          .then((response) => {
+            this.getArmes();
 
-        })
-        .catch((err) => {
-          return new Error(err.message);
-        })
+          })
+          .catch((err) => {
+            return new Error(err.message);
+          })
+        }
       },
       modif(armeUse){
        const armeAvantModif = this.items.find(arme => armeUse.armeId === arme.armeId);

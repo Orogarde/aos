@@ -271,15 +271,18 @@
         this.$router.push("/createAptitude").catch(e => {});
       },
       supprimer(aptitudeId){
-      const aptitudeIdSup = aptitudeId;
-      axios.post(`${this.$api}/deleteAptitude`, {aptitudeIdSup})
-        .then((response) => {
-          this.getAptitudes();
+      if (window.confirm("Voulez vous supprimer l'objet ?"))
+        {
+        const aptitudeIdSup = aptitudeId;
+        axios.post(`${this.$api}/deleteAptitude`, {aptitudeIdSup})
+          .then((response) => {
+            this.getAptitudes();
 
-        })
-        .catch((err) => {
-          return new Error(err.message);
-        })
+          })
+          .catch((err) => {
+            return new Error(err.message);
+          })
+        }
       },
       modif(aptitudeUse){
        const aptitudeAvantModif = this.items.find(aptitude => aptitudeUse.aptitudeId === aptitude.aptitudeId);

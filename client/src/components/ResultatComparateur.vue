@@ -5,6 +5,7 @@
         cols="12"
         sm="6">
           <v-card
+          id="scroll-indigo"
           class="mx-auto scroll-result"
           max-width="700"
           max-height=""
@@ -25,17 +26,20 @@
               Equipe 1
             </v-chip>
             <p class="white--text align-end display-1 py-1 mx-5  border-r font-weight-bold">
-              {{ team1_cout_aos }}
+              {{ team1_cout_aos.toFixed(1) }}
             </p>
             <p class="white--text">score aos</p>
           </v-card-text>
             <v-row v-for="(item, i) in team1"
                         :key="i">
+              <v-divider class="divider-white"
+              inset
+              ></v-divider>
               <v-col cols="12" sm="12">
-                 <p class="black border-r opacity-black  white--text"><span class="font-weight-bold">{{item.nom}}</span>
-                      <v-spacer></v-spacer>
-                     ( {{item.unites[0].nom}} )
-                  </p>
+                <p class="opacity-white border-r white--text"><span class="font-weight-bold">{{item.nom}}</span>
+                    <v-spacer></v-spacer>
+                    ( {{item.unites[0].nom}} )
+                </p>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-card
@@ -70,6 +74,7 @@
       </v-col>
       <v-col cols="12" sm="6">
         <v-card
+        id="scroll-pink"
         class="mx-auto scroll-result"
         max-width="700"
         max-height=""
@@ -90,14 +95,17 @@
               Equipe 2
             </v-chip>
             <p class="white--text align-end display-1 py-1 mx-5  border-r font-weight-bold">
-              {{ team2_cout_aos }}
+              {{ team2_cout_aos.toFixed(1) }}
             </p>
             <p class="white--text">score aos</p>
           </v-card-text>
             <v-row v-for="(item, i) in team2"
                         :key="i">
+              <v-divider class="divider-white"
+              inset
+              ></v-divider>
               <v-col cols="12" sm="12">
-                 <p class="black border-r opacity-black  white--text"><span class="font-weight-bold">{{item.nom}}</span>
+                 <p class="border-r opacity-white  white--text"><span class="font-weight-bold">{{item.nom}}</span>
                       <v-spacer></v-spacer>
                      ( {{item.unites[0].nom}} )
                   </p>
@@ -198,9 +206,52 @@ export default {
   height: 500px;
   overflow: auto;
 }
-.opacity-black {
+.opacity-white {
+  border: solid 2px #ffffff;
   opacity: 0.8;
   margin-left: 20%;
   margin-right: 20%;
+}
+.divider-white {
+ border-top : solid 4px #ffffff;
+ border-color: #ffffff !important;
+ opacity: 0.5;
+}
+#scroll-pink::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#scroll-pink::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#scroll-pink::-webkit-scrollbar-thumb
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background: rgb(136,14,79);
+  background: linear-gradient(0deg, rgba(136,14,79,1) 42%, rgba(248,187,208,1) 100%);
+}
+
+#scroll-indigo::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#scroll-indigo::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#scroll-indigo::-webkit-scrollbar-thumb
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background: rgb(26,35,126);
+  background: linear-gradient(0deg, rgba(26,35,126,1) 42%, rgba(197,202,233,1) 100%);
 }
 </style>

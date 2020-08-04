@@ -266,15 +266,18 @@
         this.$router.push("/createModele").catch(e => {});
       },
       supprimer(modeleId){
-      const modelId = modeleId;
-      axios.post(`${this.$api}/deleteModele`, {modelId})
-        .then((response) => {
-          this.getModeles();
+      if (window.confirm("Voulez vous supprimer l'objet ?"))
+        {
+        const modelId = modeleId;
+        axios.post(`${this.$api}/deleteModele`, {modelId})
+          .then((response) => {
+            this.getModeles();
 
-        })
-        .catch((err) => {
-          return new Error(err.message);
-        })
+          })
+          .catch((err) => {
+            return new Error(err.message);
+          })
+        }
       },
       modif(modeleUse){
        const modeleAvantModif = this.items.find(modele => modeleUse.modeleId === modele.modeleId);

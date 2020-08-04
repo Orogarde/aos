@@ -316,6 +316,8 @@
         this.$router.push("/createUnite").catch(e => {});
       },
       supprimer(uniteId){
+      if (window.confirm("Voulez vous supprimer l'objet ?"))
+        {
         const unitId = uniteId;
       axios.post(`${this.$api}/deleteUnite`, {unitId})
         .then((response) => {
@@ -325,6 +327,7 @@
         .catch((err) => {
           return new Error(err.message);
         })
+        }
       },
       modif(uniteUse){
       console.log(this.select);
