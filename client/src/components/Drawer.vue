@@ -9,7 +9,7 @@
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
           <v-toolbar-title>
             <span class="text-center">
-              <v-img :src="`${$api}/image/logo.png`" contain max-width="200" max-height="300"></v-img>
+              <v-img :src="`${$api}/image/BuildBook.svg`" contain max-width="150" max-height="300"></v-img>
             </span>
           </v-toolbar-title>
         <v-spacer></v-spacer>
