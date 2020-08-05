@@ -5,7 +5,7 @@
         :align="alignment"
         :justify="justify"
       >
-         <v-col class="border shadow"
+         <v-col class="border shadow grey lighten-3"
             cols="12"
             sm="8"
           >
@@ -17,7 +17,7 @@
               cols="9"
               md="8"
             >
-            <p class="display-1 white--text">Création Aptitude</p>
+            <p class="display-1 indigo--text font-weight-bold">Création Aptitude</p>
             </v-col>
           </v-row>
           <v-row
