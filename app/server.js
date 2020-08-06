@@ -10,7 +10,7 @@ app.use(Cors());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(logger('dev'));
-
+// routes
 require('./routes/findBattletomes')(app);
 require('./routes/findUnites')(app);
 require('./routes/findUnitesSpe')(app);

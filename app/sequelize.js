@@ -13,7 +13,7 @@ const sequelize = new Sequelize('aos','root','',{
     host: 'localhost',
     dialect: 'mysql'
 });
-
+// variables pour chaque models :
 const battle = battletome(sequelize, Sequelize);
 const unite_aos = unite(sequelize, Sequelize);
 const util = utilisateur(sequelize,Sequelize);
@@ -23,6 +23,7 @@ const apti = aptitude(sequelize,Sequelize);
 const apti_c = aptitude_c(sequelize,Sequelize);
 const arme_aos = arme(sequelize,Sequelize);
 const effet_aos = effet(sequelize,Sequelize);
+// definition des relations entre les models :
 battle.hasMany(unite_aos,{
     foreignKey: 'battletomeId',
 });
